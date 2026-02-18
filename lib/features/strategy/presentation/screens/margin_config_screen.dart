@@ -12,7 +12,7 @@ class MarginConfigurationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppAppBar(title: "Margin Configuration", isSuffixIcon: false),
+      appBar: AppAppBar(title: "DCA Level Configuration", isSuffixIcon: false),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
@@ -35,7 +35,7 @@ class MarginConfigurationScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Margin call drop",
+                              "Price drop",
                               style: getDmSansTextStyle(
                                 fontSize: 14,
                                 color: AppColors.black.withOpacity(.76),
@@ -43,7 +43,7 @@ class MarginConfigurationScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "Multiple buy in radio",
+                              "Capital Percent",
                               style: getDmSansTextStyle(
                                 fontSize: 14,
                                 color: AppColors.black.withOpacity(.76),
@@ -68,7 +68,7 @@ class MarginConfigurationScreen extends StatelessWidget {
                                   left: 5,
                                 ),
                                 child: Text(
-                                  "${NumberUtils.toOrdinal(index + 1)} Call",
+                                  "${NumberUtils.toOrdinal(index + 1)} Level",
                                   style: getDmSansTextStyle(
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.black,
@@ -84,7 +84,8 @@ class MarginConfigurationScreen extends StatelessWidget {
                                       suffixText: "%  ",
                                       align: TextAlign.center,
                                       controller: TextEditingController(
-                                        text: (index + 1).toString(),
+                                        text:
+                                            "${Random().nextDouble().toStringAsFixed(2)}",
                                       ),
                                     ),
                                   ),
@@ -92,7 +93,7 @@ class MarginConfigurationScreen extends StatelessWidget {
                                     child: AppTextField(
                                       isPrefixIcon: false,
                                       align: TextAlign.center,
-                                      suffixText: "Times ",
+                                      suffixText: "Percent",
                                       controller: TextEditingController(
                                         text: (Random().nextInt(19) + 1)
                                             .toString(),

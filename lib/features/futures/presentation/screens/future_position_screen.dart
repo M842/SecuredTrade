@@ -1,5 +1,9 @@
 import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/core/utils/padding_utils.dart';
+import 'package:securedtrade/features/futures/presentation/widgets/active_trade_button.dart';
+import 'package:securedtrade/features/futures/presentation/widgets/future_perfom_info.dart';
+import 'package:securedtrade/features/futures/presentation/widgets/trend_sniper_strategy_info.dart';
+import 'package:securedtrade/features/futures/presentation/widgets/uptrend_info.dart';
 
 class FuturePositionScreen extends StatelessWidget {
   const FuturePositionScreen({super.key});
@@ -44,6 +48,7 @@ class FuturePositionScreen extends StatelessWidget {
                 labelTotalPnL: 'Total PnL',
                 totalPnL: '+312.5 USDT',
                 investMargin: '2,490 USDT',
+                imgIcon: AppStrings.futureChangeIcon,
               ),
               AppSpacing.h12,
               RiskEngine(),
@@ -75,7 +80,7 @@ class FuturePositionScreen extends StatelessWidget {
               AppCustomCard(
                 padding: 15,
 
-                height: 720,
+                height: 705,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,6 +272,92 @@ class FuturePositionScreen extends StatelessWidget {
                           ],
                         ),
                       ),
+                    ),
+                    AppSpacing.h16,
+                    Row(
+                      children: [
+                        ActiveTradeButton(
+                          bgColor: Color(0xff3C4CF9).withOpacity(.1),
+                          text: "View Chart",
+                          borderColor: Colors.transparent,
+                        ),
+                        AppSpacing.w8,
+                        ActiveTradeButton(
+                          bgColor: Color(0xffFEF2F2).withOpacity(.1),
+                          text: "Close Position",
+                          borderColor: Color(0xffFFA2A2),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              AppSpacing.h12,
+              UptrendInfo(),
+              AppSpacing.h12,
+              TrendSniperStrategyInfo(),
+              AppSpacing.h16,
+              Text(
+                "Closed Positions (Last 3)",
+                style: getDmSansTextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: AppColors.black,
+                ),
+              ),
+
+              AppSpacing.h12,
+              Column(
+                children: List.generate(
+                  3,
+                  (ind) =>
+                      ClosePositionList(ind: ind, mode: TradingMode.future),
+                ),
+              ),
+              AppSpacing.h12,
+              AppCustomCard(
+                height: 190,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Futures Performance",
+                      style: getDmSansTextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black,
+                      ),
+                    ),
+
+                    AppSpacing.h12,
+                    Row(
+                      children: [
+                        FuturePerfItemInfo(
+                          title: "Win Rate",
+                          txColor: AppColors.green,
+                          value: '80.0%',
+                        ),
+                        FuturePerfItemInfo(
+                          title: "Avg Win",
+                          txColor: AppColors.green,
+                          value: '+8.75%',
+                        ),
+                      ],
+                    ),
+                    AppSpacing.h12,
+                    Row(
+                      children: [
+                        FuturePerfItemInfo(
+                          title: "Avg Loss",
+                          txColor: AppColors.red,
+                          value: '-2.53%',
+                        ),
+                        FuturePerfItemInfo(
+                          title: "Profit Factor",
+                          txColor: AppColors.black,
+                          value: '4.12%',
+                        ),
+                      ],
                     ),
                   ],
                 ),

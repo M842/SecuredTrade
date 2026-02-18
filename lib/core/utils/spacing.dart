@@ -15,6 +15,7 @@ class AppSpacing {
   static const Widget h12 = SizedBox(height: 12);
   static const Widget h16 = SizedBox(height: 16);
   static const Widget h20 = SizedBox(height: 20);
+  static const Widget h25 = SizedBox(height: 25);
 
   static const Widget w4 = SizedBox(width: 4);
   static const Widget w8 = SizedBox(width: 8);

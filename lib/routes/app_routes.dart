@@ -4,6 +4,7 @@ import 'package:securedtrade/features/auth/presentation/screens/register_screen.
 import 'package:securedtrade/features/auth/presentation/screens/splash_screen.dart';
 import 'package:securedtrade/features/auth/presentation/screens/verfication_screen.dart';
 import 'package:securedtrade/features/dashboard/dashboard_screen.dart';
+import 'package:securedtrade/features/dashboard/notification_screen.dart';
 import 'package:securedtrade/features/home/presentation/screens/api_manage_screen.dart';
 import 'package:securedtrade/features/home/presentation/screens/currency_details_screen.dart';
 import 'package:securedtrade/features/home/presentation/screens/home_screen.dart';
@@ -67,9 +68,13 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoutePaths.rewardDetail,
       builder: (context, state) => const RewardDetailScreen(),
-    ),  GoRoute(
+    ),
+    GoRoute(
       path: AppRoutePaths.marginConfig,
       builder: (context, state) => const MarginConfigurationScreen(),
+    ), GoRoute(
+      path: AppRoutePaths.notification,
+      builder: (context, state) => const NotificationScreen(),
     ),
     GoRoute(
       path: AppRoutePaths.userGuide,
@@ -80,6 +85,7 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         final symbol = state.extra as String;
         return TradeSettingScreen(symbol: symbol);
+        //return SpotConfigScreen();
       },
     ),
     GoRoute(

@@ -1,9 +1,9 @@
-class MarginConfig {
-  final double marginCallDropPercentage;
-  final int times;
+class DCALevelConfig {
+  final double priceDrop;
+  final int capitalPercent;
 
-  const MarginConfig({
-    required this.marginCallDropPercentage,
-    required this.times,
+  const DCALevelConfig({
+    required this.priceDrop,
+    required this.capitalPercent,
   });
 }

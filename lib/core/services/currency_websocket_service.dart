@@ -38,7 +38,7 @@ class CurrencyWebsocketService {
         try {
           final json = jsonDecode(event);
           price.value = double.parse(json['c']);
-          print('BTC Price: $price');
+
           // final l = json['data'] as List<dynamic>;
           // for (final item in l) {
           //   if (item['s'] == symbol) {

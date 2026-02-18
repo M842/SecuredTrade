@@ -119,7 +119,7 @@ class DialogUtils {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 35.0),
                       child: GestureDetector(
-                        onTap: ()=>context.pop(),
+                        onTap: () => context.pop(),
                         child: Image.asset(
                           AppStrings.closeIcon,
                           height: 25,
@@ -155,10 +155,21 @@ class DialogUtils {
                               : AppColors.primary,
                           text: tEl == 0 ? "Return" : "Confirm",
                           onPressed: () {
-                            if(tEl==0){
+                            if (tEl == 0) {
                               context.pop();
-                            }else{
-
+                            } else {
+                              context.read<StrategyBloc>().add(
+                                SaveTradeSettingData(
+                                  params: {
+                                    "pair": "SOLUSDT",
+                                    "setting": {
+                                      "firstBuyInAmount": 20,
+                                      "takeProfitRatio": 2.0,
+                                    },
+                                  },
+                                ),
+                              );
+                              context.pop();
                             }
                           },
                         ),

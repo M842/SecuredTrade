@@ -28,4 +28,6 @@ class AppRoutePaths {
   static String tradeSetting="/trade_setting";
 
   static String marginConfig="/margin_config";
+
+  static String notification="/notification";
 }

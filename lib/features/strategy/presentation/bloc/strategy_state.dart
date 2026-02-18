@@ -11,13 +11,18 @@ class StrategyLoaded extends StrategyState {
   StrategyLoaded(this.messages);
 }
 
+class TradeSettingSaved extends StrategyState {
+  final String messages;
+  TradeSettingSaved(this.messages);
+}
+
 class StrategyFailure extends StrategyState {
   final String message;
   StrategyFailure(this.message);
 }
 
-class GetTradeSetting extends StrategyState {
-  TradeSetting tradeSetting;
+class TradeSettingLoaded extends StrategyState {
+  TradeSetting? tradeSetting;
 
-  GetTradeSetting(this.tradeSetting);
+  TradeSettingLoaded(this.tradeSetting);
 }

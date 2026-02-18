@@ -6,6 +6,7 @@ import 'package:securedtrade/features/home/domain/usecases/send_code_usecase.dar
 import 'package:securedtrade/features/strategy/data/datasources/stratregy_remote_datasource.dart';
 import 'package:securedtrade/features/strategy/data/repositories/strategy_repository_impl.dart';
 import 'package:securedtrade/features/strategy/domain/usecases/get_trade_setting_usecase.dart';
+import 'package:securedtrade/features/strategy/domain/usecases/save_trade_setting_usecase.dart';
 import 'package:securedtrade/features/strategy/presentation/bloc/strategy_bloc.dart';
 
 void main() {
@@ -43,7 +44,10 @@ void main() {
         ),
 
         BlocProvider(
-          create: (_) => StrategyBloc(GetTradeSettingUseCase(strategyRepo)),
+          create: (_) => StrategyBloc(
+            GetTradeSettingUseCase(strategyRepo),
+            SaveTradeSettingUseCase(strategyRepo),
+          ),
         ),
       ],
       child: MyApp(),

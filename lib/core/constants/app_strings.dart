@@ -71,6 +71,7 @@ class AppStrings {
   static String registerBg = "assets/images/register_bg.png";
 
   static String banner = "assets/images/banner.png";
+  static String futureChangeIcon = "assets/images/future_charge_icon.png";
 
   static String appBarIcon = "assets/images/appbar_icon.png";
 

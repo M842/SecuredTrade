@@ -7,39 +7,33 @@ import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dar
 class TradeSettingModel extends TradeSetting {
   TradeSettingModel({
     required super.symbol,
-    required super.strategyPeriod,
-    required super.strategyMode,
-    required super.initialBuyInPrice,
-    required super.switchOnMarginCall,
-    required super.aiMarginCall,
-    required super.firstBuyInAmount,
-    required super.marginCallLimit,
-    required super.marginCallDropPercent,
-    required super.takeProfitRatio,
-    required super.earningsCallbackPercent,
-    required super.buyInCallbackPercent,
-    required super.marginConfigLimits,
+
     required super.tradingMode,
     required super.subTradingMode,
+    required super.initialBuyPercent,
+    required super.maxDcaCount,
+    required super.takeProfitPercent,
+    required super.trailingStopPercent,
+    required super.rsiEntry,
+    required super.rsiDca,
+    required super.useEmaFilter,
+    required super.dcaLevels,
   });
 
   Map<String, dynamic> toJson() => {
     "tradingMode": tradingMode.value,
     "subTradingMode": subTradingMode.value,
     "symbol": symbol,
-    "strategyPeriod": strategyPeriod.value,
-    "strategyMode": strategyMode.value,
-    "initialBuyInPrice": initialBuyInPrice,
-    "switchOnMarginCall": switchOnMarginCall,
-    "aiMarginCall": aiMarginCall,
-    "firstBuyInAmount": firstBuyInAmount,
-    "marginCallLimit": marginCallLimit,
-    "marginCallDropPercent": marginCallDropPercent,
-    "takeProfitRatio": takeProfitRatio,
-    "earningsCallbackPercent": earningsCallbackPercent,
-    "buyInCallbackPercent": buyInCallbackPercent,
-    "marginConfigLimits": marginConfigLimits
-        .map((e) => (e as MarginConfigModel).toJson())
+
+    "initialBuyPercent": initialBuyPercent,
+    "useEmaFilter": useEmaFilter,
+    "maxDcaCount": maxDcaCount,
+    "takeProfitPercent": takeProfitPercent,
+    "trailingStopPercent": trailingStopPercent,
+    "rsiEntry": rsiEntry,
+    "rsiDca": rsiDca,
+    "dcaLevels": dcaLevels
+        .map((e) => (e as DCALevelConfigModel).toJson())
         .toList(),
   };
 
@@ -48,19 +42,15 @@ class TradeSettingModel extends TradeSetting {
       tradingMode: json["tradingMode"],
       subTradingMode: json["subTradingMode"],
       symbol: json["symbol"],
-      strategyPeriod: StrategyPeriodX.fromValue(json["strategyPeriod"]),
-      strategyMode: StrategyModeX.fromValue(json["strategyMode"]),
-      initialBuyInPrice: json["initialBuyInPrice"]?.toDouble(),
-      switchOnMarginCall: json["switchOnMarginCall"],
-      aiMarginCall: json["aiMarginCall"],
-      firstBuyInAmount: json["firstBuyInAmount"].toDouble(),
-      marginCallLimit: json["marginCallLimit"],
-      marginCallDropPercent: json["marginCallDropPercent"].toDouble(),
-      takeProfitRatio: json["takeProfitRatio"].toDouble(),
-      earningsCallbackPercent: json["earningsCallbackPercent"].toDouble(),
-      buyInCallbackPercent: json["buyInCallbackPercent"].toDouble(),
-      marginConfigLimits: (json["marginConfigLimits"] as List)
-          .map((e) => MarginConfigModel.fromJson(e))
+      initialBuyPercent: (json['initialBuyPercent'] ?? 0).toDouble(),
+      maxDcaCount: json['maxDcaCount'] ?? 0,
+      takeProfitPercent: (json['takeProfitPercent'] ?? 0).toDouble(),
+      trailingStopPercent: (json['trailingStopPercent'] ?? 0).toDouble(),
+      rsiEntry: (json['rsiEntry'] ?? 0).toDouble(),
+      rsiDca: (json['rsiDca'] ?? 0).toDouble(),
+      useEmaFilter: json['useEmaFilter'] ?? false,
+      dcaLevels: (json["dcsLevels"] as List)
+          .map((e) => DCALevelConfigModel.fromJson(e))
           .toList(),
     );
   }
@@ -72,18 +62,14 @@ extension TradeSettingMapper on TradeSetting {
       tradingMode: tradingMode,
       subTradingMode: subTradingMode,
       symbol: symbol,
-      strategyPeriod: strategyPeriod,
-      strategyMode: strategyMode,
-      initialBuyInPrice: initialBuyInPrice,
-      switchOnMarginCall: switchOnMarginCall,
-      aiMarginCall: aiMarginCall,
-      firstBuyInAmount: firstBuyInAmount,
-      marginCallLimit: marginCallLimit,
-      marginCallDropPercent: marginCallDropPercent,
-      takeProfitRatio: takeProfitRatio,
-      earningsCallbackPercent: earningsCallbackPercent,
-      buyInCallbackPercent: buyInCallbackPercent,
-      marginConfigLimits: marginConfigLimits,
+      initialBuyPercent: initialBuyPercent,
+      takeProfitPercent: takeProfitPercent,
+      trailingStopPercent: trailingStopPercent,
+      useEmaFilter: useEmaFilter,
+      dcaLevels: dcaLevels,
+      maxDcaCount: maxDcaCount,
+      rsiDca: rsiDca,
+      rsiEntry: rsiEntry,
     );
   }
 }

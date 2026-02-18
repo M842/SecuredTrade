@@ -24,6 +24,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     // TODO: implement getHomeData
 
     final res = await ApiClient().post(ApiEndpoints.dashboard);
+    print(res);
     Map data = json.decode(res.toString());
     if (!data.containsKey(AppConstants.apiError)) {
       return ApiResponse(status: true);

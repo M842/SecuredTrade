@@ -1,9 +1,15 @@
 import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/features/home/presentation/screens/currency_details_screen.dart';
+import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dart';
 
 class CurrencyDetailPosition extends StatelessWidget {
   final String symbol;
-  const CurrencyDetailPosition({super.key, required this.symbol});
+  final TradeSetting? mData;
+  const CurrencyDetailPosition({
+    super.key,
+    required this.symbol,
+    required this.mData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,36 +55,44 @@ class CurrencyDetailPosition extends StatelessWidget {
           Row(
             children: [
               SizedBox(width: 6),
-              Image.asset(AppStrings.binanceIcon, height: 15),
+              Image.asset(
+                AppStrings.binanceIcon,
+                height: 17,
+                color: AppColors.yellow,
+              ),
 
               SizedBox(width: 15),
-              ContainerBg(
-                backgroundColor: Colors.orange.shade50,
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    "One-Shot",
-                    style: getDmSansTextStyle(
-                      fontSize: 12,
-                      color: Colors.orange,
+              mData == null
+                  ? SizedBox()
+                  : ContainerBg(
+                      backgroundColor: Colors.orange.shade50,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          "One-Shot",
+                          style: getDmSansTextStyle(
+                            fontSize: 12,
+                            color: Colors.orange,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
               SizedBox(width: 15),
-              ContainerBg(
-                backgroundColor: Colors.blueAccent.withOpacity(.2),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    "Whole Warehouse Mode",
-                    style: getDmSansTextStyle(
-                      fontSize: 12,
-                      color: Colors.blueAccent,
+              mData == null
+                  ? SizedBox()
+                  : ContainerBg(
+                      backgroundColor: Colors.blueAccent.withOpacity(.2),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          "Whole Warehouse Mode",
+                          style: getDmSansTextStyle(
+                            fontSize: 12,
+                            color: Colors.blueAccent,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
             ],
           ),
           SizedBox(height: 20),

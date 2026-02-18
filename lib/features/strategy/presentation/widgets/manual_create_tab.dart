@@ -16,32 +16,35 @@ class ManualCreateTab extends StatefulWidget {
 }
 
 class _ManualCreateTabState extends State<ManualCreateTab> {
-  TextEditingController editFirstBuyController = TextEditingController(
-    text: "12",
+  TextEditingController editInitialBuyController = TextEditingController(
+    text: "1.2",
   );
 
-  TextEditingController editMarginLimitController = TextEditingController(
+  TextEditingController editDCACountController = TextEditingController(
     text: "7",
   );
 
-  TextEditingController editProfitRadioController = TextEditingController(
+  TextEditingController editTakeProfitPercentController = TextEditingController(
     text: "1.4",
   );
 
-  TextEditingController editProfitRadioCallbackController =
+  TextEditingController editTrailingStopPercentController =
       TextEditingController(text: "0.2");
 
-  TextEditingController editBuyCallbackController = TextEditingController(
+  TextEditingController editRSIEntryController = TextEditingController(
     text: "0.5",
   );
-  TextEditingController editSubPosTakeProfitCallbackController =
-      TextEditingController(text: "0.5");
+  TextEditingController editRSIDCAController = TextEditingController(
+    text: "0.5",
+  );
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 10),
+        AppSpacing.h16,
+
+        /* SizedBox(height: 10),
         AppCustomCard(
           radius: 7,
           height: 70,
@@ -140,40 +143,40 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
               ],
             ),
           ),
-        ),
-
+        ),*/
         AppCustomCard(
-          height: 230,
-          radius: 8,
+          height: 164,
+          radius: 10,
           child: Column(
             children: [
               Row(
                 children: [
-                  headingTextView(title: "First Buy in Amount"),
+                  headingTextView(title: "Initial Buy Percent"),
                   Spacer(),
 
                   Expanded(
                     child: AppTextField(
-                      suffixText: "USDT ",
+                      suffixText: "% ",
                       radius: 4,
-                      controller: editFirstBuyController,
+                      controller: editInitialBuyController,
                       align: TextAlign.center,
                       fillColor: AppColors.grey4,
                       borderColor: AppColors.grey5,
                       borderWidth: 0,
                       padding: 0,
-                      hintText: "0",
+                      hintText: "0.1",
                       isPrefixIcon: false,
                       isSuffixIcon: false,
                     ),
                   ),
                 ],
               ),
+              AppSpacing.h8,
               dividerLine(),
 
               Row(
                 children: [
-                  headingTextView(title: "Enable Opening Double"),
+                  headingTextView(title: "Use EMA Filter"),
                   Spacer(),
                   Switch(
                     value: false,
@@ -187,30 +190,30 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
                   ),
                 ],
               ),
-              dividerLine(),
-
-              Row(
-                children: [
-                  headingTextView(title: "AI Margin Call"),
-                  Spacer(),
-                  Switch(
-                    value: true,
-                    activeThumbColor: AppColors.white,
-                    inactiveTrackColor: AppColors.primary,
-                    activeColor: AppColors.secondary,
-                    activeTrackColor: AppColors.primary,
-                    inactiveThumbColor: AppColors.primary,
-
-                    onChanged: (onChanged) {},
-                  ),
-                ],
-              ),
+              // dividerLine(),
+              //
+              // Row(
+              //   children: [
+              //     headingTextView(title: "AI Margin Call"),
+              //     Spacer(),
+              //     Switch(
+              //       value: true,
+              //       activeThumbColor: AppColors.white,
+              //       inactiveTrackColor: AppColors.primary,
+              //       activeColor: AppColors.secondary,
+              //       activeTrackColor: AppColors.primary,
+              //       inactiveThumbColor: AppColors.primary,
+              //
+              //       onChanged: (onChanged) {},
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
 
         AppCustomCard(
-          height: 600,
+          height: 520,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -229,14 +232,14 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
 
               Row(
                 children: [
-                  headingTextView(title: "Margin call limit"),
+                  headingTextView(title: "Max DCA count"),
                   Spacer(),
 
                   Expanded(
                     child: AppTextField(
                       suffixText: "",
                       radius: 4,
-                      controller: editMarginLimitController,
+                      controller: editDCACountController,
                       align: TextAlign.center,
                       fillColor: AppColors.grey4,
                       borderColor: AppColors.grey5,
@@ -252,14 +255,14 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
               dividerLine(),
               Row(
                 children: [
-                  headingTextView(title: "Whole position take \nprofit radio"),
+                  headingTextView(title: "Take Profit Percent"),
                   Spacer(),
 
                   Expanded(
                     child: AppTextField(
                       suffixText: "%",
                       radius: 4,
-                      controller: editProfitRadioController,
+                      controller: editTakeProfitPercentController,
                       align: TextAlign.center,
                       fillColor: AppColors.grey4,
                       borderColor: AppColors.grey5,
@@ -275,11 +278,9 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
               dividerLine(),
               Row(
                 children: [
-                  headingTextView(
-                    title: "Whole position take \nprofit callback",
-                  ),
+                  headingTextView(title: "Trailing Stop Percent"),
                   Spacer(),
-                  Icon(Icons.error, color: AppColors.grey, size: 18),
+                  //Icon(Icons.error, color: AppColors.grey, size: 18),
                   SizedBox(width: 4),
                   Expanded(
                     child: AppTextField(
@@ -290,7 +291,7 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
                       borderColor: AppColors.grey5,
                       borderWidth: 0,
                       padding: 0,
-                      controller: editProfitRadioCallbackController,
+                      controller: editTrailingStopPercentController,
                       hintText: "0.2",
                       isPrefixIcon: false,
                       isSuffixIcon: false,
@@ -301,7 +302,7 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
               dividerLine(),
               Row(
                 children: [
-                  headingTextView(title: "Margin configuration"),
+                  headingTextView(title: "DCA configuration"),
                   Spacer(),
                   IconButton(
                     onPressed: () {
@@ -318,8 +319,8 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
               dividerLine(),
               Row(
                 children: [
-                  headingTextView(title: "Buy in callback"),
-                  Icon(Icons.error, color: AppColors.grey, size: 18),
+                  headingTextView(title: "RSI Entry"),
+                  //Icon(Icons.error, color: AppColors.grey, size: 18),
                   Spacer(),
 
                   SizedBox(width: 4),
@@ -327,7 +328,7 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
                     child: AppTextField(
                       suffixText: "%",
                       radius: 4,
-                      controller: editBuyCallbackController,
+                      controller: editRSIEntryController,
                       align: TextAlign.center,
                       fillColor: AppColors.grey4,
                       borderColor: AppColors.grey5,
@@ -342,10 +343,10 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
               ),
 
               dividerLine(),
-              Row(
+              /* Row(
                 children: [
                   headingTextView(
-                    title: "Distributed and Take\nProfit Allocation",
+                    title: "RSI DCA",
                   ),
                   Spacer(),
                   IconButton(
@@ -357,13 +358,13 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
                     ),
                   ),
                 ],
-              ),
-              dividerLine(),
+              ),*/
+              //dividerLine(),
               Row(
                 children: [
-                  headingTextView(title: "Sub-position take-profit\n callback"),
+                  headingTextView(title: "RSI DCA"),
                   Spacer(),
-                  Icon(Icons.error, color: AppColors.grey),
+                  // Icon(Icons.error, color: AppColors.grey),
                   SizedBox(width: 7),
                   Expanded(
                     child: AppTextField(
@@ -374,7 +375,7 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
                       borderColor: AppColors.grey5,
                       borderWidth: 0,
                       padding: 0,
-                      controller: editSubPosTakeProfitCallbackController,
+                      controller: editRSIDCAController,
                       hintText: "0.3",
                       isPrefixIcon: false,
                       isSuffixIcon: false,
@@ -393,31 +394,28 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
               tradingMode: TradingMode.spot,
               subTradingMode: SubTradingMode.martingale,
               symbol: widget.symbol,
-              strategyPeriod: StrategyPeriod.cycle,
-              strategyMode: StrategyMode.wholeWarehouseMode,
-              switchOnMarginCall: true,
-              initialBuyInPrice: 0.0,
-              aiMarginCall: true,
-              firstBuyInAmount: double.parse(
-                editFirstBuyController.text.toString(),
+
+              useEmaFilter: true,
+
+              initialBuyPercent: double.parse(
+                editInitialBuyController.text.toString(),
               ),
-              marginCallLimit: editMarginLimitController.text,
-              marginCallDropPercent: 3.6,
-              takeProfitRatio: double.parse(editProfitRadioController.text),
-              earningsCallbackPercent: double.parse(
-                editProfitRadioCallbackController.text,
+              maxDcaCount: int.parse(editDCACountController.text),
+
+              takeProfitPercent: double.parse(
+                editTakeProfitPercentController.text,
               ),
-              buyInCallbackPercent: double.parse(
-                editBuyCallbackController.text,
+              trailingStopPercent: double.parse(
+                editTrailingStopPercentController.text,
               ),
-              marginConfigLimits: [
-                MarginConfigModel(marginCallDropPercentage: 3.6, times: 2),
-                MarginConfigModel(marginCallDropPercentage: 12.5, times: 4),
-                MarginConfigModel(marginCallDropPercentage: 3.6, times: 8),
-                MarginConfigModel(marginCallDropPercentage: 12.5, times: 16),
-                MarginConfigModel(marginCallDropPercentage: 3.6, times:32),
-                MarginConfigModel(marginCallDropPercentage: 3.6, times: 64),
-                MarginConfigModel(marginCallDropPercentage: 12.5, times: 128),
+              rsiEntry: double.parse(editRSIEntryController.text),
+              rsiDca: double.parse(editRSIDCAController.text),
+              dcaLevels: [
+                DCALevelConfigModel(priceDrop: 0.6, capitalPercent: 2),
+                DCALevelConfigModel(priceDrop: 1.6, capitalPercent: 10),
+                DCALevelConfigModel(priceDrop: 2.4, capitalPercent: 5),
+                DCALevelConfigModel(priceDrop: 3.0, capitalPercent: 6),
+                DCALevelConfigModel(priceDrop: 1.2, capitalPercent: 9),
               ],
             );
             final setting = rq.toModel();
@@ -450,5 +448,62 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
         fontWeight: FontWeight.w500,
       ),
     );
+  }
+
+  bool validation() {
+    if (int.parse(editInitialBuyController.text) <= 0 ||
+        int.parse(editInitialBuyController.text) > 1) {
+      SnackbarHelper.show(
+        context,
+        message: "Initial Buy Percent must be between 0 and 1",
+      );
+      return false;
+    }
+
+    if (int.parse(editDCACountController.text) < 0 ||
+        int.parse(editDCACountController.text) > 20) {
+      SnackbarHelper.show(
+        context,
+        message: "Max Dca Count must be between 0 and 20",
+      );
+      return false;
+    }
+
+    if (int.parse(editTakeProfitPercentController.text) <= 0 ||
+        int.parse(editTakeProfitPercentController.text) > 0.5) {
+      SnackbarHelper.show(
+        context,
+        message: "Take Profit Percent must be between 0 and 0.5",
+      );
+      return false;
+    }
+
+    if (int.parse(editTrailingStopPercentController.text) < 0 ||
+        int.parse(editTrailingStopPercentController.text) > 0.5) {
+      SnackbarHelper.show(
+        context,
+        message: "Trailing Stop Percent must be between 0 and 0.5",
+      );
+      return false;
+    }
+
+    if (int.parse(editRSIEntryController.text) < 0 ||
+        int.parse(editRSIEntryController.text) > 100) {
+      SnackbarHelper.show(
+        context,
+        message: "RSI Entry must be between 0 and 100",
+      );
+      return false;
+    }
+
+    if (int.parse(editRSIDCAController.text) < 0 ||
+        int.parse(editRSIDCAController.text) > 100) {
+      SnackbarHelper.show(
+        context,
+        message: "RSI DCA must be between 0 and 100",
+      );
+      return false;
+    }
+    return true;
   }
 }

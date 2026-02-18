@@ -77,3 +77,4 @@ class _TradeSettingScreenState extends State<TradeSettingScreen> {
     );
   }
 }
+

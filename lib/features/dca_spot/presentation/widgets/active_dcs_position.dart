@@ -1,4 +1,5 @@
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/features/futures/presentation/widgets/active_trade_button.dart';
 
 class ActiveDCAPositionList extends StatelessWidget {
   final int index;
@@ -361,33 +362,18 @@ class ActiveDCAPositionList extends StatelessWidget {
                 SizedBox(height: 15),
                 Row(
                   children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          //AppUtils.navPush2(
-                          //     context, SpotDcaStrategyScreen());
-                        },
-                        child: ContainerBg(
-                          width: double.infinity,
-                          height: 40,
-                          radius: 10,
-
-                          backgroundColor: AppColors.primary.withOpacity(.1),
-                          child: Center(
-                            child: Text(
-                              "View Chart",
-                              style: getDmSansTextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                    ActiveTradeButton(
+                      bgColor: AppColors.primary.withOpacity(.1),
+                      text: "View Chart",
+                      borderColor: Colors.transparent,
                     ),
                     SizedBox(width: 10),
-                    Expanded(
+                    ActiveTradeButton(
+                      bgColor: AppColors.white,
+                      text: "Setting",
+                      borderColor: Color(0xffD1D5DC),
+                    ),
+                    /* Expanded(
                       child: GestureDetector(
                         onTap: () {
                           //AppUtils.navPush2(
@@ -421,7 +407,7 @@ class ActiveDCAPositionList extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
+                    )*/
                   ],
                 ),
               ],

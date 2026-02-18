@@ -10,7 +10,7 @@ class DepositNftScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppAppBar(title: "Deposit Nft"),
+      appBar: AppAppBar(title: "Deposit"),
       body: _qrCodeView(context),
     );
   }

@@ -1,7 +1,9 @@
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dart';
 
 class BotStrategyDetail extends StatelessWidget {
-  const BotStrategyDetail({super.key});
+  final TradeSetting? mData;
+  const BotStrategyDetail({super.key, required this.mData});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class BotStrategyDetail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
+              AppSpacing.h12,
               Text(
                 "Strategy Details",
                 style: getDmSansTextStyle(
@@ -24,17 +26,19 @@ class BotStrategyDetail extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 15),
+              AppSpacing.h16,
               Row(
                 children: [
                   strategyDetailItemView(
-                    title: "First Buy in Amount(USDT)",
-                    amount: "0",
+                    title: "Initial Buy Percent(%)",
+                    amount: mData == null
+                        ? "0"
+                        : mData!.initialBuyPercent.toString(),
                   ),
                   Spacer(),
                   strategyDetailItemView(
-                    title: "Margin call limit",
-                    amount: "0",
+                    title: "Max DCA Count",
+                    amount: mData == null ? "0" : mData!.maxDcaCount.toString(),
                   ),
                 ],
               ),
@@ -50,13 +54,17 @@ class BotStrategyDetail extends StatelessWidget {
               Row(
                 children: [
                   strategyDetailItemView(
-                    title: "Take profit ratio",
-                    amount: "0%",
+                    title: "Take profit percent",
+                    amount: mData == null
+                        ? "0"
+                        : "${mData!.takeProfitPercent}0%",
                   ),
                   Spacer(),
                   strategyDetailItemView(
-                    title: "Earnings callback",
-                    amount: "0%",
+                    title: "Trailing Stop Percent",
+                    amount: mData == null
+                        ? "0%"
+                        : "${mData!.trailingStopPercent.toString()}0%",
                   ),
                 ],
               ),
@@ -72,14 +80,19 @@ class BotStrategyDetail extends StatelessWidget {
               Row(
                 children: [
                   strategyDetailItemView(
-                    title: "Margin call drop",
-                    amount: "-",
+                    title: "DCA level drop",
+                    amount: mData == null
+                        ? "0%"
+                        : "${mData!.dcaLevels.first.priceDrop.toStringAsFixed(2)}%",
                   ),
                   Spacer(),
-                  strategyDetailItemView(title: "Buy in callback", amount: "-"),
+                  strategyDetailItemView(
+                    title: "RSI Entry",
+                    amount: mData == null ? "0%" : "${mData!.rsiEntry}%",
+                  ),
                 ],
               ),
-              SizedBox(height: 10,)
+              AppSpacing.h16,
             ],
           ),
         ),

@@ -6,7 +6,8 @@ class StrategyStatus extends StatelessWidget {
       labelTotalPnL,
       totalPnL,
       labelInvestMargin,
-      investMargin;
+      investMargin,
+      imgIcon;
   const StrategyStatus({
     super.key,
     required this.heading,
@@ -15,6 +16,7 @@ class StrategyStatus extends StatelessWidget {
     required this.labelTotalPnL,
     required this.totalPnL,
     required this.investMargin,
+    required this.imgIcon,
   });
 
   @override
@@ -62,10 +64,13 @@ class StrategyStatus extends StatelessWidget {
                   radius: 40,
                   width: 48,
                   backgroundColor: AppColors.white.withOpacity(.2),
-                  child: Icon(
-                    Icons.trending_up,
-                    color: AppColors.white,
-                    size: 30,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image.asset(
+                      imgIcon,
+
+                      color: AppColors.white,
+                    ),
                   ),
                 ),
                 SizedBox(width: 30),
@@ -74,7 +79,10 @@ class StrategyStatus extends StatelessWidget {
             SizedBox(height: 15),
             Row(
               children: [
-                strategyTextView(title:labelInvestMargin, amount:investMargin),
+                strategyTextView(
+                  title: labelInvestMargin,
+                  amount: investMargin,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0, right: 20),
                   child: ContainerBg(
@@ -84,7 +92,7 @@ class StrategyStatus extends StatelessWidget {
                     child: SizedBox(),
                   ),
                 ),
-                strategyTextView(title: labelTotalPnL, amount:totalPnL),
+                strategyTextView(title: labelTotalPnL, amount: totalPnL),
               ],
             ),
           ],

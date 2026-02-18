@@ -1,21 +1,21 @@
 import 'package:securedtrade/features/strategy/domain/entities/margin_config.dart';
 import 'package:securedtrade/features/strategy/domain/entities/margin_limit.dart';
 
-class MarginConfigModel extends MarginConfig {
-  const MarginConfigModel({
-    required super.marginCallDropPercentage,
-    required super.times,
+class DCALevelConfigModel extends DCALevelConfig {
+  const DCALevelConfigModel({
+    required super.priceDrop,
+    required super.capitalPercent,
   });
 
   Map<String, dynamic> toJson() => {
-    "marginCallDropPercentage": marginCallDropPercentage,
-    "times": times,
+    "priceDrop": priceDrop,
+    "capitalPercent": capitalPercent,
   };
 
-  factory MarginConfigModel.fromJson(Map<String, dynamic> json) {
-    return MarginConfigModel(
-      marginCallDropPercentage: json["marginCallDropPercentage"],
-      times: json["times"].toDouble(),
+  factory DCALevelConfigModel.fromJson(Map<String, dynamic> json) {
+    return DCALevelConfigModel(
+      priceDrop: json["priceDrop"],
+      capitalPercent: json["capitalPercent"].toDouble(),
     );
   }
 }

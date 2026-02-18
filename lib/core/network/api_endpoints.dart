@@ -10,4 +10,5 @@ class ApiEndpoints {
   static String sendOtp = "/sendOtp";
 
   static String getTradeSetting = "/getSmartSettings";
+  static String saveTradeSetting = "/SaveSettings";
 }

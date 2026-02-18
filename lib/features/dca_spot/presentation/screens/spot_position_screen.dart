@@ -44,6 +44,7 @@ class SpotPositionScreen extends StatelessWidget {
                 botName: "Smart DCA Active",
                 labelInvestMargin: "Total Invested",
                 labelTotalPnL: "Total PnL",
+                imgIcon: AppStrings.trendSymbolIcon,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, top: 30, bottom: 20),
@@ -56,7 +57,9 @@ class SpotPositionScreen extends StatelessWidget {
                         fontSize: 16,
                         color: AppColors.black2,
                       ),
-                    ),Spacer(), Text(
+                    ),
+                    Spacer(),
+                    Text(
                       "View All",
                       style: getDmSansTextStyle(
                         fontWeight: FontWeight.w600,
@@ -77,7 +80,7 @@ class SpotPositionScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 10),
+              AppSpacing.h12,
 
               ContainerBg(
                 height: 150,
@@ -123,24 +126,27 @@ class SpotPositionScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 15),
+
+              AppSpacing.h16,
 
               Text(
-                "Closed Positions (Last 5)",
+                "Closed Positions (Last 3)",
                 style: getDmSansTextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
                   color: AppColors.black,
                 ),
               ),
-              SizedBox(height: 10),
+
+              AppSpacing.h12,
               Column(
                 children: List.generate(
                   3,
-                  (ind) => ClosePositionList(ind: ind),
+                  (ind) => ClosePositionList(ind: ind, mode: TradingMode.spot),
                 ),
               ),
-              SizedBox(height: 15),
+
+              AppSpacing.h16,
             ],
           ),
         ),

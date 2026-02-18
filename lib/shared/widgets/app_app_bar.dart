@@ -1,7 +1,7 @@
 import 'package:securedtrade/config/path_config.dart';
 
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final bool leading,isSuffixIcon;
+  final bool leading, isSuffixIcon;
   final String? title, subtitle;
   final Color appBarColor;
   const AppAppBar({
@@ -9,7 +9,8 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     this.subtitle = "",
     this.appBarColor = AppColors.appBarColor,
-    this.leading = false,this.isSuffixIcon=true,
+    this.leading = false,
+    this.isSuffixIcon = true,
   });
 
   @override
@@ -74,16 +75,18 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
             SizedBox(height: 0, width: 25),
             Spacer(),
 
-            isSuffixIcon?IconButton(
-              onPressed: () {},
-              icon: SizedBox(
-                height: 22,
-                child: Image.asset(
-                  AppStrings.notificationIcon,
-                  color: AppColors.black2,
-                ),
-              ),
-            ):SizedBox(),
+            isSuffixIcon
+                ? IconButton(
+                    onPressed: () {},
+                    icon: SizedBox(
+                      height: 22,
+                      child: Image.asset(
+                        AppStrings.notificationIcon,
+                        color: AppColors.black2,
+                      ),
+                    ),
+                  )
+                : SizedBox(),
           ],
         ),
       ),
@@ -96,9 +99,9 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class AppAppBar2 extends StatelessWidget implements PreferredSizeWidget {
-  final bool leading;
+  final bool isSuffixIcon;
   final String title;
-  const AppAppBar2({super.key, required this.title, this.leading = false});
+  const AppAppBar2({super.key, required this.title, this.isSuffixIcon = true});
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +118,12 @@ class AppAppBar2 extends StatelessWidget implements PreferredSizeWidget {
             SizedBox(height: 0, width: 15),
             Image.asset(AppStrings.appBarIcon, height: 45),
             Spacer(),
-            Image.asset(AppStrings.notificationIcon, height: 25),
+            isSuffixIcon?GestureDetector(
+              onTap: () {
+                context.push(AppRoutePaths.notification);
+              },
+              child: Image.asset(AppStrings.notificationIcon, height: 25),
+            ):SizedBox(),
             SizedBox(height: 0, width: 20),
           ],
         ),

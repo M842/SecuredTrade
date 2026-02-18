@@ -9,4 +9,10 @@ class StrategyRepositoryImpl implements StrategyRepository {
     // TODO: implement getTradeSetting
     return remote.getTradeSetting(pair);
   }
+
+  @override
+  Future<ApiResponse> saveTradeSetting(Map<String, dynamic> params) {
+    // TODO: implement saveTradeSetting
+    return remote.saveSmartSetting(params);
+  }
 }

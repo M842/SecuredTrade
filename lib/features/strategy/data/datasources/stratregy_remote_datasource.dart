@@ -5,6 +5,7 @@ import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dar
 
 abstract class StrategyRemoteDataSource {
   Future<ApiResponse> getTradeSetting(String pair);
+  Future<ApiResponse> saveSmartSetting(Map<String, dynamic> params);
 }
 
 class StrategyRemoteDataSourceImpl implements StrategyRemoteDataSource {
@@ -16,9 +17,29 @@ class StrategyRemoteDataSourceImpl implements StrategyRemoteDataSource {
       data: {"pair": "SOLUSDT"},
     );
     Map data = json.decode(resp.toString());
+    print(resp);
+    if (!data.containsKey(AppConstants.apiError)) {
+      return ApiResponse(status: true, data: null);
+    } else {
+      return ApiResponse(
+        status: false,
+        data: null,
+        message: data[AppConstants.apiError],
+      );
+    }
+  }
+
+  @override
+  Future<ApiResponse> saveSmartSetting(Map<String, dynamic> params) async {
+    // TODO: implement saveSmartSetting
+    final resp = await ApiClient().post(
+      ApiEndpoints.saveTradeSetting,
+      data: params,
+    );
+    Map data = json.decode(resp.toString());
     print(data);
     if (!data.containsKey(AppConstants.apiError)) {
-      return ApiResponse(status: true);
+      return ApiResponse(status: true, message: data[AppConstants.apiMessage]);
     } else {
       return ApiResponse(
         status: false,

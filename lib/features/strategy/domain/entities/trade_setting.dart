@@ -6,38 +6,27 @@ class TradeSetting {
   final TradingMode tradingMode;
   final SubTradingMode subTradingMode;
   final String symbol;
-  final StrategyPeriod strategyPeriod;
-  final StrategyMode strategyMode;
+  final double initialBuyPercent;
+  final int maxDcaCount;
+  final double takeProfitPercent;
+  final double trailingStopPercent;
+  final double rsiEntry;
+  final double rsiDca;
+  final bool useEmaFilter;
 
-  /// true only when strategyMode == StrategyMode.cycle
-  final double? initialBuyInPrice;
-
-  final bool switchOnMarginCall;
-  final bool aiMarginCall;
-  final double firstBuyInAmount;
-  final List<MarginConfig> marginConfigLimits;
-  final String marginCallLimit;
-  final double marginCallDropPercent;
-
-  final double takeProfitRatio;
-  final double earningsCallbackPercent;
-  final double buyInCallbackPercent;
+  final List<DCALevelConfig> dcaLevels;
 
   TradeSetting({
+    required this.initialBuyPercent,
+    required this.maxDcaCount,
+    required this.takeProfitPercent,
+    required this.trailingStopPercent,
+    required this.rsiEntry,
+    required this.rsiDca,
+    required this.useEmaFilter,
+    required this.dcaLevels,
     required this.tradingMode,
     required this.subTradingMode,
     required this.symbol,
-    required this.strategyPeriod,
-    required this.strategyMode,
-    this.initialBuyInPrice,
-    required this.switchOnMarginCall,
-    required this.aiMarginCall,
-    required this.firstBuyInAmount,
-    required this.marginConfigLimits,
-    required this.marginCallLimit,
-    required this.marginCallDropPercent,
-    required this.takeProfitRatio,
-    required this.earningsCallbackPercent,
-    required this.buyInCallbackPercent,
   });
 }
