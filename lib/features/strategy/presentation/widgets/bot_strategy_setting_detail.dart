@@ -8,7 +8,7 @@ class BotStrategySettingDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 345,
+      height: 295,
       child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8),
         child: Card(
@@ -23,7 +23,7 @@ class BotStrategySettingDetail extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Details",
+                  "Intelligence Details",
                   style: getDmSansTextStyle(
                     fontWeight: FontWeight.w600,
                     color: AppColors.black,
@@ -31,44 +31,9 @@ class BotStrategySettingDetail extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 15),
-
-                Row(
-                  children: [
-                    Text(
-                      "Strategy Mode",
-                      style: getDmSansTextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.black,
-                        fontSize: 14.5,
-                      ),
-                    ),
-                    Spacer(),
-                    TextButton(onPressed: (){
-                      BottomSheetUtils.show(context: context,
-                          child: StrategyModeSheet());
-                    },
-                        child: Row(children: [
-                          Text(
-                            "Steady",
-                            style: getDmSansTextStyle(
-                              fontSize: 14,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          AppSpacing.w4,
-                          Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            color: AppColors.black,
-                          ),
-
-                        ],))
-                  ],
-                ),
-                SizedBox(height: 6),
+                AppSpacing.h20,
                 ContainerBg(
-                  height: 150,
+                  height: 205,
                   radius: 5,
                   width: double.infinity,
                   backgroundColor: AppColors.grey4,
@@ -76,23 +41,25 @@ class BotStrategySettingDetail extends StatelessWidget {
                     children: [
                       SizedBox(height: 10),
                       strategyModeTextItem(
-                        title: "Sell after increasing",
-                        values: "1.3%",
-                      ),
-                      strategyModeTextItem(
-                        title: "Buy before dropping",
-                        values: "Default",
-                      ),
-                      strategyModeTextItem(title: "Max Position", values: "7"),
-                      strategyModeTextItem(
-                        title: "AI Margin Call",
+                        title: "EMA Filter",
                         values: "Enable",
                       ),
+                      strategyModeTextItem(
+                        title: "Take Profile Percent",
+                        values: "1.4",
+                      ),strategyModeTextItem(
+                        title: "Trailing Stop Percent",
+                        values: "0.2",
+                      ),
+                      strategyModeTextItem(title: "RSI Entry", values: "1.3%"),
+                      strategyModeTextItem(title: "RSI DCA", values: "0.5"),
+
+
                     ],
                   ),
                 ),
                 SizedBox(height: 14),
-                ContainerBg(
+                /*ContainerBg(
                   height: 50,
                   radius: 5,
                   width: double.infinity,
@@ -120,7 +87,7 @@ class BotStrategySettingDetail extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
           ),
@@ -131,7 +98,7 @@ class BotStrategySettingDetail extends StatelessWidget {
 
   strategyModeTextItem({required String title, required String values}) {
     return Padding(
-      padding: const EdgeInsets.only(left: 12.0, top: 10, bottom: 5, right: 12),
+      padding: const EdgeInsets.only(left: 12.0, top: 10, bottom: 10, right: 12),
       child: Row(
         children: [
           Text(

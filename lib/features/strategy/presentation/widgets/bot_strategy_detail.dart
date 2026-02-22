@@ -1,8 +1,9 @@
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
 import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dart';
 
 class BotStrategyDetail extends StatelessWidget {
-  final TradeSetting? mData;
+  final SpotTradeSettingModel? mData;
   const BotStrategyDetail({super.key, required this.mData});
 
   @override
@@ -30,15 +31,18 @@ class BotStrategyDetail extends StatelessWidget {
               Row(
                 children: [
                   strategyDetailItemView(
-                    title: "Initial Buy Percent(%)",
+                    title: "DCA level drop(%)",
                     amount: mData == null
                         ? "0"
-                        : mData!.initialBuyPercent.toString(),
+                        : mData!.data.spotConfig.dcaLevels.first.priceDrop
+                              .toString(),
                   ),
                   Spacer(),
                   strategyDetailItemView(
                     title: "Max DCA Count",
-                    amount: mData == null ? "0" : mData!.maxDcaCount.toString(),
+                    amount: mData == null
+                        ? "0"
+                        : mData!.data.spotConfig.maxDcaCount.toString(),
                   ),
                 ],
               ),
@@ -57,14 +61,14 @@ class BotStrategyDetail extends StatelessWidget {
                     title: "Take profit percent",
                     amount: mData == null
                         ? "0"
-                        : "${mData!.takeProfitPercent}0%",
+                        : "${mData!.data.spotConfig.takeProfitPercent}0%",
                   ),
                   Spacer(),
                   strategyDetailItemView(
                     title: "Trailing Stop Percent",
                     amount: mData == null
                         ? "0%"
-                        : "${mData!.trailingStopPercent.toString()}0%",
+                        : "${mData!.data.spotConfig.trailingStopPercent.toString()}0%",
                   ),
                 ],
               ),
@@ -80,15 +84,17 @@ class BotStrategyDetail extends StatelessWidget {
               Row(
                 children: [
                   strategyDetailItemView(
-                    title: "DCA level drop",
+                    title: "RSI DCA",
                     amount: mData == null
                         ? "0%"
-                        : "${mData!.dcaLevels.first.priceDrop.toStringAsFixed(2)}%",
+                        : "${mData!.data.spotConfig.rsiDca}%",
                   ),
                   Spacer(),
                   strategyDetailItemView(
                     title: "RSI Entry",
-                    amount: mData == null ? "0%" : "${mData!.rsiEntry}%",
+                    amount: mData == null
+                        ? "0%"
+                        : "${mData!.data.spotConfig.rsiEntry}%",
                   ),
                 ],
               ),

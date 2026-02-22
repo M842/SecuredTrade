@@ -53,14 +53,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      final resp = await registerUseCase.execute(event.email, event.password);
+      ApiResponse apiResponse = await registerUseCase.execute(
+        event.userName,
+        event.email,
+        event.password,
+      );
       //Map data = json.decode(resp.toString());
       /*  token = data[AppConstants.apiToken];
       UserPrefs.saveUser(data[AppConstants.apiToken].toString());
-*/
-      emit(RegisterSuccess());
+*
+       */
+      if (apiResponse.status) {
+        emit(RegisterSuccess());
+      } else {
+        emit(AuthFailure2(apiResponse.message.toString()));
+      }
     } catch (ex) {
-      emit(AuthFailure(ex.toString()));
+      emit(AuthFailure2(ex.toString()));
     }
   }
 

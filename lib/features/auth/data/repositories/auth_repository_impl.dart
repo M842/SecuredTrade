@@ -26,9 +26,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<User> register(String email, String password) async {
+  Future<ApiResponse> register(String userName,String email, String password) async {
     // TODO: implement register
-    return await remote.register(email, password);
+    return  remote.register(userName,email,password);
   }
 
   @override

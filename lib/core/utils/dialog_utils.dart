@@ -99,7 +99,10 @@ class DialogUtils {
     );
   }
 
-  static void sveTradeSettingDialog(BuildContext context) {
+  static void sveTradeSettingDialog(
+    BuildContext context,
+    Map<dynamic, dynamic> params,
+  ) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -159,16 +162,9 @@ class DialogUtils {
                               context.pop();
                             } else {
                               context.read<StrategyBloc>().add(
-                                SaveTradeSettingData(
-                                  params: {
-                                    "pair": "SOLUSDT",
-                                    "setting": {
-                                      "firstBuyInAmount": 20,
-                                      "takeProfitRatio": 2.0,
-                                    },
-                                  },
-                                ),
+                                SaveTradeSettingData(params: params),
                               );
+                              context.pop();
                               context.pop();
                             }
                           },

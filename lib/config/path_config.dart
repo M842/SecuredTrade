@@ -12,6 +12,19 @@ export 'package:securedtrade/features/home/domain/usecases/get_home_data_usecase
 export 'package:securedtrade/features/home/presentation/bloc/home_bloc.dart';
 export 'package:securedtrade/routes/app_routes.dart';
 
+export 'package:securedtrade/features/auth/domain/usecases/logout_usecase.dart';
+export 'package:securedtrade/features/auth/domain/usecases/register_usecase.dart';
+export 'package:securedtrade/features/home/domain/usecases/save_api_detail_usecase.dart';
+export 'package:securedtrade/features/home/domain/usecases/send_code_usecase.dart';
+export 'package:securedtrade/features/strategy/data/datasources/stratregy_remote_datasource.dart';
+export 'package:securedtrade/features/strategy/data/repositories/strategy_repository_impl.dart';
+export 'package:securedtrade/features/strategy/domain/usecases/get_trade_setting_usecase.dart';
+export 'package:securedtrade/features/strategy/domain/usecases/save_trade_setting_usecase.dart';
+
+export 'package:securedtrade/features/dashboard/widgets/alerts_item_list.dart';
+export 'package:securedtrade/features/dashboard/widgets/system_notification_item_list.dart';
+export 'package:securedtrade/features/dashboard/widgets/trade_notification_item_list.dart';
+
 export 'package:securedtrade/features/auth/data/datasources/auth_local_datasource.dart'
     show AuthLocalDataSourceImpl;
 export 'package:securedtrade/features/auth/domain/usecases/login_usecase.dart';

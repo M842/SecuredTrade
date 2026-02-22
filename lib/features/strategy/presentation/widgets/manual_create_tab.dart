@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/core/utils/dialog_utils.dart';
 import 'package:securedtrade/features/strategy/data/models/margin_config_model.dart';
 import 'package:securedtrade/features/strategy/data/models/margin_limit_model.dart';
+import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
 import 'package:securedtrade/features/strategy/data/models/trade_setting_model.dart';
 import 'package:securedtrade/features/strategy/domain/entities/margin_config.dart';
 import 'package:securedtrade/features/strategy/domain/entities/margin_limit.dart';
@@ -8,8 +12,14 @@ import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dar
 import 'package:securedtrade/features/strategy/presentation/widgets/strategy_mode_dialog.dart';
 
 class ManualCreateTab extends StatefulWidget {
+  final SpotTradeSettingModel? tradeSettingModel;
+
   final String symbol;
-  const ManualCreateTab({super.key, required this.symbol});
+  const ManualCreateTab({
+    super.key,
+    required this.tradeSettingModel,
+    required this.symbol,
+  });
 
   @override
   State<ManualCreateTab> createState() => _ManualCreateTabState();
@@ -37,6 +47,77 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
   TextEditingController editRSIDCAController = TextEditingController(
     text: "0.5",
   );
+
+  bool isEmaFilter = false;
+
+  List<DcaLevel> dcsLevelList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    onInitTradeSetting();
+    super.initState();
+  }
+
+  onInitTradeSetting() {
+    if (widget.tradeSettingModel != null) {
+      editRSIEntryController.text = widget
+          .tradeSettingModel!
+          .data
+          .spotConfig
+          .rsiEntry
+          .toString();
+      isEmaFilter = widget.tradeSettingModel!.data.spotConfig.useEmaFilter;
+      editInitialBuyController.text = widget
+          .tradeSettingModel!
+          .data
+          .spotConfig
+          .initialBuyPercent
+          .toString();
+      editDCACountController.text = widget
+          .tradeSettingModel!
+          .data
+          .spotConfig
+          .maxDcaCount
+          .toString();
+      editTakeProfitPercentController.text = widget
+          .tradeSettingModel!
+          .data
+          .spotConfig
+          .takeProfitPercent
+          .toString();
+      editTrailingStopPercentController.text = widget
+          .tradeSettingModel!
+          .data
+          .spotConfig
+          .trailingStopPercent
+          .toString();
+      editRSIDCAController.text = widget
+          .tradeSettingModel!
+          .data
+          .spotConfig
+          .rsiDca
+          .toString();
+
+      setDcsLevels(
+        dca: widget.tradeSettingModel!.data.spotConfig.maxDcaCount.toString(),
+      );
+    } else {
+      setDcsLevels(dca: editDCACountController.text.trim());
+    }
+  }
+
+  setDcsLevels({required String dca}) {
+    for (int i = 1; i <= int.parse(dca); i++) {
+      dcsLevelList.add(
+        DcaLevel(
+          priceDrop: Random().nextInt(10) + 1,
+          capitalPercent: (Random().nextInt(19) + 1),
+        ),
+      );
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -179,35 +260,25 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
                   headingTextView(title: "Use EMA Filter"),
                   Spacer(),
                   Switch(
-                    value: false,
+                    value: isEmaFilter,
                     activeThumbColor: AppColors.white,
                     inactiveTrackColor: AppColors.white,
                     activeColor: AppColors.secondary,
                     activeTrackColor: AppColors.primary,
                     inactiveThumbColor: AppColors.primary,
 
-                    onChanged: (onChanged) {},
+                    onChanged: (onChanged) {
+                      setState(() {
+                        if (isEmaFilter) {
+                          isEmaFilter = false;
+                        } else {
+                          isEmaFilter = true;
+                        }
+                      });
+                    },
                   ),
                 ],
               ),
-              // dividerLine(),
-              //
-              // Row(
-              //   children: [
-              //     headingTextView(title: "AI Margin Call"),
-              //     Spacer(),
-              //     Switch(
-              //       value: true,
-              //       activeThumbColor: AppColors.white,
-              //       inactiveTrackColor: AppColors.primary,
-              //       activeColor: AppColors.secondary,
-              //       activeTrackColor: AppColors.primary,
-              //       inactiveThumbColor: AppColors.primary,
-              //
-              //       onChanged: (onChanged) {},
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),
@@ -239,12 +310,23 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
                     child: AppTextField(
                       suffixText: "",
                       radius: 4,
+                      textInputType: TextInputType.number,
                       controller: editDCACountController,
                       align: TextAlign.center,
                       fillColor: AppColors.grey4,
                       borderColor: AppColors.grey5,
                       borderWidth: 0,
                       padding: 0,
+                      onChanged: (val) {
+                        for (int i = 1; i <= int.parse(val.data); i++) {
+                          dcsLevelList.add(
+                            DcaLevel(
+                              priceDrop: Random().nextInt(10) + 1,
+                              capitalPercent: (Random().nextInt(19) + 1),
+                            ),
+                          );
+                        }
+                      },
                       hintText: "0",
                       isPrefixIcon: false,
                       isSuffixIcon: false,
@@ -305,8 +387,16 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
                   headingTextView(title: "DCA configuration"),
                   Spacer(),
                   IconButton(
-                    onPressed: () {
-                      context.push(AppRoutePaths.marginConfig);
+                    onPressed: () async {
+                      final result = await context.push<List<DcaLevel>>(
+                        AppRoutePaths.marginConfig,
+                        extra: dcsLevelList,
+                      );
+                      if (result != null) {
+                        setState(() {
+                          dcsLevelList = result;
+                        });
+                      }
                     },
                     icon: Icon(
                       Icons.arrow_forward_ios,
@@ -390,36 +480,38 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
         AppButton(
           text: "Save",
           onPressed: () {
-            TradeSetting rq = TradeSetting(
-              tradingMode: TradingMode.spot,
-              subTradingMode: SubTradingMode.martingale,
-              symbol: widget.symbol,
+           // if (validation()) {
+              SpotConfig rq = SpotConfig(
+                useEmaFilter: isEmaFilter,
 
-              useEmaFilter: true,
+                initialBuyPercent: double.parse(
+                  editInitialBuyController.text.toString(),
+                ),
+                maxDcaCount: int.parse(editDCACountController.text),
 
-              initialBuyPercent: double.parse(
-                editInitialBuyController.text.toString(),
-              ),
-              maxDcaCount: int.parse(editDCACountController.text),
+                takeProfitPercent: double.parse(
+                  editTakeProfitPercentController.text,
+                ),
+                trailingStopPercent: double.parse(
+                  editTrailingStopPercentController.text,
+                ),
+                rsiEntry: editRSIEntryController.text,
+                rsiDca: editRSIDCAController.text,
+                dcaLevels: dcsLevelList,
+              );
+              final setting = rq.toJson();
+              Map<dynamic, dynamic> params = {
+                "pair": widget.symbol,
 
-              takeProfitPercent: double.parse(
-                editTakeProfitPercentController.text,
-              ),
-              trailingStopPercent: double.parse(
-                editTrailingStopPercentController.text,
-              ),
-              rsiEntry: double.parse(editRSIEntryController.text),
-              rsiDca: double.parse(editRSIDCAController.text),
-              dcaLevels: [
-                DCALevelConfigModel(priceDrop: 0.6, capitalPercent: 2),
-                DCALevelConfigModel(priceDrop: 1.6, capitalPercent: 10),
-                DCALevelConfigModel(priceDrop: 2.4, capitalPercent: 5),
-                DCALevelConfigModel(priceDrop: 3.0, capitalPercent: 6),
-                DCALevelConfigModel(priceDrop: 1.2, capitalPercent: 9),
-              ],
-            );
-            final setting = rq.toModel();
-            print(setting.toJson());
+                "setting": {
+                  "mode": TradingMode.spot.value,
+                  "symbols": widget.symbol,
+                  "spotConfig": setting,
+                },
+              };
+
+              DialogUtils.sveTradeSettingDialog(context, params);
+          //  }
           },
         ),
         SizedBox(height: 15),
@@ -451,8 +543,8 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
   }
 
   bool validation() {
-    if (int.parse(editInitialBuyController.text) <= 0 ||
-        int.parse(editInitialBuyController.text) > 1) {
+    if (double.parse(editInitialBuyController.text) <= 0 ||
+        double.parse(editInitialBuyController.text) > 1) {
       SnackbarHelper.show(
         context,
         message: "Initial Buy Percent must be between 0 and 1",

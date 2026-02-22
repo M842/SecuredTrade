@@ -12,6 +12,9 @@ class Unauthenticated extends AuthState {}
 class AuthFailure extends AuthState {
   final String message;
   AuthFailure(this.message);
+}class AuthFailure2 extends AuthState {
+  final String message;
+  AuthFailure2(this.message);
 }
 
 class RegisterSuccess extends AuthState {}

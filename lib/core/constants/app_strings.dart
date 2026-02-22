@@ -129,6 +129,7 @@ class AppStrings {
   static String closeIcon = "assets/images/closeIcon.png";
 
   static String errorIcon="assets/images/error2_icon.png";
+  static String checkedIcon="assets/images/checked_icon.png";
 }
 
 List<String> recordAnalysisList = [

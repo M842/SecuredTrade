@@ -137,8 +137,9 @@ class _ApiManageScreenState extends State<ApiManageScreen> {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
-                                    context.read<HomeBloc>().
-                                    add(SentOTP(context));
+                                    context.read<HomeBloc>().add(
+                                      SentOTP(context),
+                                    );
                                   },
                                   child: ContainerBg(
                                     radius: 8,
@@ -217,10 +218,22 @@ class _ApiManageScreenState extends State<ApiManageScreen> {
                       message: "Please enter secret key",
                     );
                   }
-                  final result = EncryptionService.encrypt(
-                    editApiKeyController.text.trim(),
-                    editSecretKeyController.text.trim(),
-                  );
+
+                  if (editVerificationController.text.trim().isEmpty) {
+                    return SnackbarHelper.show(
+                      context,
+                      message: "Please enter Verification Code",
+                    );
+                  }
+
+                  // final result = EncryptionService.encrypt(
+                  //   editApiKeyController.text.trim(),
+                  //   editSecretKeyController.text.trim(),
+                  // );
+                  final result = {
+                    "apiKey": editApiKeyController.text.trim(),
+                    "secretKey": editSecretKeyController.text.trim(),
+                  };
 
                   // print("$apiKeyEnc  ||  $secretKeyEnc  ||  $aesKeyEnc");
                   context.read<HomeBloc>().add(
@@ -240,11 +253,14 @@ class _ApiManageScreenState extends State<ApiManageScreen> {
             editApiKeyController.clear();
             editSecretKeyController.clear();
             editVerificationController.clear();
-            SnackbarHelper.show(context, message:state.messages,
-            backgroundColor: AppColors.green);
+            SnackbarHelper.show(
+              context,
+              message: state.messages,
+              backgroundColor: AppColors.green,
+            );
           } else if (state is ApiKeysNotExist) {
             SnackbarHelper.show(context, message: state.error);
-          }else if(state is HomeError){
+          } else if (state is HomeError) {
             SnackbarHelper.show(context, message: state.message);
           }
         },

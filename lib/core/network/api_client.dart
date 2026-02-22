@@ -34,7 +34,7 @@ class ApiClient {
   }
 
   Future<Response> post(String path, {dynamic data}) async {
-    print('🆔 ApiClient hash (post): ${hashCode}');
+    print('🆔 ApiClient hash (post): ${hashCode} $data');
     try {
       final response = await dio.post(path, data: data);
       return response;

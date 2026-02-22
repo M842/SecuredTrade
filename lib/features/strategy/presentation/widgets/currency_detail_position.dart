@@ -1,10 +1,11 @@
 import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/features/home/presentation/screens/currency_details_screen.dart';
+import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
 import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dart';
 
 class CurrencyDetailPosition extends StatelessWidget {
   final String symbol;
-  final TradeSetting? mData;
+  final SpotTradeSettingModel? mData;
   const CurrencyDetailPosition({
     super.key,
     required this.symbol,
@@ -23,6 +24,27 @@ class CurrencyDetailPosition extends StatelessWidget {
               Image.asset(
                 height: 30,
                 "assets/icon/${formatSymbol2(symbol).toLowerCase()}@2x.png",
+                errorBuilder: (c, u, cr) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 3.0),
+                    child: ContainerBg(
+                      height: 28,
+                      width: 28,
+                      radius: 100,
+                      backgroundColor: AppColors.black,
+                      child: Center(
+                        child: Text(
+                          symbol[0],
+                          style: getDmSansTextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
               SizedBox(width: 15),
               Text(

@@ -4,10 +4,18 @@ import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/core/utils/number_utils.dart';
 import 'package:securedtrade/core/utils/padding_utils.dart';
 import 'package:securedtrade/core/utils/spacing.dart';
+import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
 
-class MarginConfigurationScreen extends StatelessWidget {
-  const MarginConfigurationScreen({super.key});
+class MarginConfigurationScreen extends StatefulWidget {
+  final List<DcaLevel> dcaLevelList;
+  const MarginConfigurationScreen({super.key, required this.dcaLevelList});
 
+  @override
+  State<MarginConfigurationScreen> createState() =>
+      _MarginConfigurationScreenState();
+}
+
+class _MarginConfigurationScreenState extends State<MarginConfigurationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,9 +64,9 @@ class MarginConfigurationScreen extends StatelessWidget {
                       AppSpacing.h(10),
 
                       Column(
-                        children: List.generate(
-                          7,
-                          (index) => Column(
+                        children: widget.dcaLevelList.map((toElement) {
+                          int index = widget.dcaLevelList.indexOf(toElement);
+                          return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Padding(
@@ -82,20 +90,32 @@ class MarginConfigurationScreen extends StatelessWidget {
                                     child: AppTextField(
                                       isPrefixIcon: false,
                                       suffixText: "%  ",
+                                      onChanged: (val) {
+                                        setState(() {
+                                          widget.dcaLevelList[index].priceDrop =
+                                              double.parse(val.data);
+                                        });
+                                      },
                                       align: TextAlign.center,
                                       controller: TextEditingController(
-                                        text:
-                                            "${Random().nextDouble().toStringAsFixed(2)}",
+                                        text: toElement.priceDrop
+                                            .toStringAsFixed(2),
                                       ),
                                     ),
                                   ),
                                   Expanded(
                                     child: AppTextField(
                                       isPrefixIcon: false,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          widget.dcaLevelList[index].priceDrop =
+                                              double.parse(val.data);
+                                        });
+                                      },
                                       align: TextAlign.center,
                                       suffixText: "Percent",
                                       controller: TextEditingController(
-                                        text: (Random().nextInt(19) + 1)
+                                        text: /**/ toElement.capitalPercent
                                             .toString(),
                                       ),
                                     ),
@@ -103,15 +123,22 @@ class MarginConfigurationScreen extends StatelessWidget {
                                 ],
                               ),
                             ],
-                          ),
-                        ),
+                          );
+                        }).toList(),
                       ),
+
                       AppSpacing.h8,
                     ],
                   ),
                 ),
               ),
-              AppButton(height: 47, text: "Confirm", onPressed: () {}),
+              AppButton(
+                height: 47,
+                text: "Confirm",
+                onPressed: () {
+                  context.pop<List<DcaLevel>>(widget.dcaLevelList);
+                },
+              ),
             ],
           ),
         ),

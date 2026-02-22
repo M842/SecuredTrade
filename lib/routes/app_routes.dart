@@ -12,6 +12,7 @@ import 'package:securedtrade/features/home/presentation/screens/profit_screen.da
 import 'package:securedtrade/features/home/presentation/screens/reward_details_screen.dart';
 import 'package:securedtrade/features/home/presentation/screens/user_guide_screen.dart';
 import 'package:securedtrade/features/profile/edit_profile_screen.dart';
+import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
 import 'package:securedtrade/features/strategy/presentation/screens/create_bot_screen.dart';
 import 'package:securedtrade/features/strategy/presentation/screens/margin_config_screen.dart';
 import 'package:securedtrade/features/strategy/presentation/screens/trade_setting_screen.dart';
@@ -71,8 +72,13 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: AppRoutePaths.marginConfig,
-      builder: (context, state) => const MarginConfigurationScreen(),
-    ), GoRoute(
+
+      builder: (context, state) {
+        final count = state.extra as List<DcaLevel>;
+        return MarginConfigurationScreen(dcaLevelList: count);
+      },
+    ),
+    GoRoute(
       path: AppRoutePaths.notification,
       builder: (context, state) => const NotificationScreen(),
     ),
@@ -83,8 +89,19 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoutePaths.tradeSetting,
       builder: (context, state) {
-        final symbol = state.extra as String;
-        return TradeSettingScreen(symbol: symbol);
+        final args = state.extra as ManualCreateArgs;
+
+        SpotTradeSettingModel? tradeSetting;
+        if (state.extra != null) {
+          tradeSetting = args.tradeSettingModel;
+        } else {
+          tradeSetting = null;
+        }
+
+        return TradeSettingScreen(
+          tradeSettingModel: tradeSetting,
+          symbol: args.symbol,
+        );
         //return SpotConfigScreen();
       },
     ),

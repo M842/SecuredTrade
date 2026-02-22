@@ -17,7 +17,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool isEnabled = false;
 
-  final editCodeController = TextEditingController();
+  final editUserNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +58,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     SizedBox(height: 40, width: 0),
+                    // AppTextField(
+                    //   controller: editUserNameController,
+                    //   labelText: "UserName",
+                    //   icon: CupertinoIcons.person_alt,
+                    //   hintText: "Enter UserName",
+                    // ),
+                    AppSpacing.h12,
                     AppTextField(
                       labelText: "E-mail",
                       onChanged: (_) {
@@ -73,8 +80,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: editEmailController,
                       hintText: "Enter your email",
                     ),
-                    SizedBox(height: 20, width: 0),
-                    AppButton(
+                    AppSpacing.h12,
+
+                    /*AppButton(
                       padding: 0,
                       text: "Verify Email Address",
                       onPressed: () {
@@ -93,15 +101,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       bWidth: 2,
                       textColor: AppColors.primary,
                       borderColor: AppColors.primary,
-                    ),
-                    SizedBox(height: 15, width: 0),
-                    AppTextField(
+                    ),*/
+                    // SizedBox(height: 15, width: 0),
+                    /* AppTextField(
                       controller: editCodeController,
                       labelText: "Verification Code",
                       icon: CupertinoIcons.creditcard,
                       hintText: "Verification Code",
-                    ),
-                    SizedBox(height: 15, width: 0),
+                    ),*/
                     AppTextField(
                       obscureText: true,
                       labelText: "Password",
@@ -119,9 +126,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       hintText: "Enter your password",
                       controller: editPasswordController,
                     ),
-                    SizedBox(height: 15, width: 0),
+                    AppSpacing.h25,
                     TermsCondition(),
-                    SizedBox(height: 20, width: 0),
+                    AppSpacing.h25,
                     AppButton(
                       padding: 0,
                       bWidth: 1,
@@ -134,6 +141,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           customProgressLoading(context);
                           context.read<AuthBloc>().add(
                             RegisterRequest(
+                              userName: editUserNameController.text,
                               email: editEmailController.text,
                               password: editPasswordController.text,
                             ),
@@ -145,7 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ? AppColors.primary
                           : AppColors.white,
                     ),
-                    SizedBox(height: 25, width: 0),
+                    AppSpacing.h16,
                     Center(
                       child: RichText(
                         text: TextSpan(
@@ -182,9 +190,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         listener: (BuildContext context, AuthState state) {
           if (state is RegisterSuccess) {
             context.go(AppRoutePaths.login);
-          } else if (state is AuthFailure) {
-            context.pop();
+          } else if (state is AuthFailure2) {
             SnackbarHelper.show(context, message: state.message);
+            context.pop();
+            context.pop();
           }
         },
       ),
@@ -192,6 +201,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   bool validation(BuildContext context) {
+    /* if (editUserNameController.text.trim().isEmpty) {
+      SnackbarHelper.show(context, message: "Please enter username");
+      return false;
+    }*/
     if (editEmailController.text.trim().isEmpty) {
       SnackbarHelper.show(context, message: "Please enter email address");
       return false;

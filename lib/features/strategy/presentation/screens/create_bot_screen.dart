@@ -1,6 +1,14 @@
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
 import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dart';
 import 'package:securedtrade/features/strategy/presentation/bloc/strategy_state.dart';
+
+class ManualCreateArgs {
+  final SpotTradeSettingModel? tradeSettingModel;
+  final String symbol;
+
+  ManualCreateArgs({required this.tradeSettingModel, required this.symbol});
+}
 
 class CreateBotScreen extends StatefulWidget {
   final String symbol;
@@ -23,30 +31,37 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
     SystemUI.set(StatusBarStyle.lightTransparent);
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Column(
+      body: Stack(
         children: [
-          Flexible(
-            child: Stack(
-              children: [
-                CustomBotAppBar(),
+          CustomBotAppBar(),
 
-                BlocListener<StrategyBloc, StrategyState>(
-                  listener: (BuildContext context, StrategyState state) {
-                    if (state is StrategyFailure) {
-                      SnackbarHelper.show(context, message: state.message);
-                    }
-                  },
-                  child: BlocBuilder<StrategyBloc, StrategyState>(
-                    builder: (c, mState) {
-                      TradeSetting? tradeSetting = mState is TradeSettingLoaded
-                          ? mState.tradeSetting
-                          : null;
-                      return Padding(
-                        padding: const EdgeInsets.only(
-                          top: 100.0,
-                          left: 0,
-                          right: 0,
-                        ),
+          BlocListener<StrategyBloc, StrategyState>(
+            listener: (BuildContext context, StrategyState state) {
+              if (state is StrategyFailure) {
+                SnackbarHelper.show(context, message: state.message);
+              } else if (state is BotActivatedState) {
+                SnackbarHelper.show(
+                  context,
+                  message: state.messages,
+                  backgroundColor: AppColors.green,
+                );
+              } else if (state is ActivationFailure) {
+                SnackbarHelper.show(
+                  context,
+                  message: state.messages.toString(),
+                );
+              }
+            },
+            child: BlocBuilder<StrategyBloc, StrategyState>(
+              builder: (c, mState) {
+                SpotTradeSettingModel? tradeSetting =
+                    mState is TradeSettingLoaded ? mState.tradeSetting : null;
+
+                return Padding(
+                  padding: const EdgeInsets.only(top: 100.0, left: 0, right: 0),
+                  child: Column(
+                    children: [
+                      Flexible(
                         child: SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +99,7 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
                                       child: Row(
                                         children: [
                                           Text(
-                                            "Initial buy-in-price",
+                                            "Initial Buy In Percent",
                                             style: getDmSansTextStyle(
                                               fontWeight: FontWeight.w500,
                                               color: AppColors.black,
@@ -92,13 +107,36 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
                                             ),
                                           ),
                                           Spacer(),
-                                          Icon(
-                                            Icons.arrow_forward_ios,
-                                            size: 18,
-                                            color: AppColors.black.withOpacity(
-                                              .7,
+                                          ContainerBg(
+                                            bWidth: 1,
+                                            backgroundColor: AppColors.grey5
+                                                .withOpacity(.7),
+                                            borderColor: AppColors.grey6
+                                                .withOpacity(.3),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                top: 8.0,
+                                                bottom: 8,
+                                                left: 15,
+                                                right: 15,
+                                              ),
+                                              child: Text(
+                                                tradeSetting == null
+                                                    ? ""
+                                                    : tradeSetting
+                                                          .data
+                                                          .spotConfig
+                                                          .initialBuyPercent
+                                                          .toString(),
+                                                style: getDmSansTextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14,
+                                                  color: AppColors.black,
+                                                ),
+                                              ),
                                             ),
                                           ),
+                                          AppSpacing.w8,
                                         ],
                                       ),
                                     ),
@@ -130,7 +168,10 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
                                       Switch(
                                         value: tradeSetting == null
                                             ? false
-                                            : tradeSetting.useEmaFilter,
+                                            : tradeSetting
+                                                  .data
+                                                  .spotConfig
+                                                  .useEmaFilter,
                                         activeThumbColor: AppColors.white,
                                         inactiveTrackColor: tradeSetting == null
                                             ? AppColors.white
@@ -193,38 +234,46 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
                             ],
                           ),
                         ),
-                      );
-                    },
+                      ),
+
+                      SizedBox(height: 15),
+                      Row(
+                        children: [
+                          TradeButton(
+                            onTap: () {
+                              context.push(
+                                AppRoutePaths.tradeSetting,
+                                extra: ManualCreateArgs(
+                                  tradeSettingModel: tradeSetting,
+                                  symbol: widget.symbol,
+                                ),
+                              );
+                            },
+                            title: "Trade Setting",
+                            radius: 4,
+                            backgroundColor: Color(0xffF5F7FC),
+                            txColor: AppColors.black,
+                          ),
+                          TradeButton(
+                            radius: 5,
+                            onTap: () {
+                              context.read<StrategyBloc>().add(
+                                SetBotActivation(pair: widget.symbol),
+                              );
+                            },
+                            title: "Activate",
+                            backgroundColor: AppColors.primary,
+                            txColor: AppColors.white,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4),
+                    ],
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
-          SizedBox(height: 15),
-          Row(
-            children: [
-              TradeButton(
-                onTap: () {
-                  context.push(
-                    AppRoutePaths.tradeSetting,
-                    extra: widget.symbol,
-                  );
-                },
-                title: "Trade Setting",
-                radius: 4,
-                backgroundColor: Color(0xffF5F7FC),
-                txColor: AppColors.black,
-              ),
-              TradeButton(
-                radius: 5,
-                onTap: () {},
-                title: "Activate",
-                backgroundColor: AppColors.primary,
-                txColor: AppColors.white,
-              ),
-            ],
-          ),
-          SizedBox(height: 4),
         ],
       ),
     );

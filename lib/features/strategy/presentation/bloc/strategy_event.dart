@@ -5,7 +5,12 @@ class GetTradeSettingData extends StrategyEvent {
   GetTradeSettingData({required this.pair});
 }
 
+class SetBotActivation extends StrategyEvent {
+  final String pair;
+  SetBotActivation({required this.pair});
+}
+
 class SaveTradeSettingData extends StrategyEvent {
-  final Map<String, dynamic> params;
+  final Map<dynamic, dynamic> params;
   SaveTradeSettingData({required this.params});
 }

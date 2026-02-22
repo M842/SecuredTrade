@@ -32,7 +32,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _onLoadHome(LoadHomeEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoading());
     try {
-
       ApiResponse apiResponse = await homeDataUseCase.execute();
 
       if (apiResponse.status) {
@@ -49,8 +48,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> getApiKeys(LoadKeyEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoading());
     ApiResponse apiResponse = await getApiKeyUseCase.execute();
+    print(apiResponse.data);
     if (apiResponse.status) {
-      emit(GetApiKeysLoaded(apiKey: "", secretKey: ""));
+      emit(
+        GetApiKeysLoaded(
+          apiKey: apiResponse.data["apikey"],
+          secretKey: apiResponse.data["secretkey"],
+        ),
+      );
     } else {
       emit(ApiKeysNotExist(error: apiResponse.message.toString()));
     }
@@ -121,8 +126,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       event.keyOtp,
     );
     if (apiResponse.status) {
+      add(LoadKeyEvent());
       emit(HomeLoaded(apiResponse.message.toString()));
-    }else{
+    } else {
       emit(HomeError(apiResponse.message.toString()));
     }
   }

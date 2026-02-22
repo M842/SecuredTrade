@@ -1,13 +1,5 @@
 import 'package:securedtrade/config/path_config.dart';
-import 'package:securedtrade/features/auth/domain/usecases/logout_usecase.dart';
-import 'package:securedtrade/features/auth/domain/usecases/register_usecase.dart';
-import 'package:securedtrade/features/home/domain/usecases/save_api_detail_usecase.dart';
-import 'package:securedtrade/features/home/domain/usecases/send_code_usecase.dart';
-import 'package:securedtrade/features/strategy/data/datasources/stratregy_remote_datasource.dart';
-import 'package:securedtrade/features/strategy/data/repositories/strategy_repository_impl.dart';
-import 'package:securedtrade/features/strategy/domain/usecases/get_trade_setting_usecase.dart';
-import 'package:securedtrade/features/strategy/domain/usecases/save_trade_setting_usecase.dart';
-import 'package:securedtrade/features/strategy/presentation/bloc/strategy_bloc.dart';
+import 'package:securedtrade/features/strategy/domain/usecases/activate_bot_usecase.dart';
 
 void main() {
   Env.init(AppEnvironment.dev);
@@ -47,6 +39,7 @@ void main() {
           create: (_) => StrategyBloc(
             GetTradeSettingUseCase(strategyRepo),
             SaveTradeSettingUseCase(strategyRepo),
+            ActivateBotUseCase(strategyRepo),
           ),
         ),
       ],

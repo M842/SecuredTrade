@@ -11,8 +11,14 @@ class StrategyRepositoryImpl implements StrategyRepository {
   }
 
   @override
-  Future<ApiResponse> saveTradeSetting(Map<String, dynamic> params) {
+  Future<ApiResponse> saveTradeSetting(Map<dynamic, dynamic> params) {
     // TODO: implement saveTradeSetting
     return remote.saveSmartSetting(params);
+  }
+
+  @override
+  Future<ApiResponse> activateBot(String pair) {
+    // TODO: implement activateBot
+    return remote.activateBot(pair);
   }
 }

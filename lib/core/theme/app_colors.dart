@@ -32,12 +32,10 @@ class AppColors {
   static const Color gradientColor1 = Color(0xff3C4CF9);
   static const Color gradientColor2 = Color(0xff9515FA);
 
-  static const Color green=Color(0xff00C950);
-  static const Color green2=Color(0xff00A63E);
+  static const Color green = Color(0xff00C950);
+  static const Color green2 = Color(0xff00A63E);
 
-  static const Color red=Color(0xffE7000B);
-
-
+  static const Color red = Color(0xffE7000B);
 }
 
 //C2185BFF

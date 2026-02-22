@@ -9,6 +9,7 @@ class ApiEndpoints {
 
   static String sendOtp = "/sendOtp";
 
-  static String getTradeSetting = "/getSmartSettings";
+  static String getTradeSetting = "/getManualSettings";
   static String saveTradeSetting = "/SaveSettings";
+  static String createBot = "/CreateBot";
 }

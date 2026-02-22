@@ -1,20 +1,23 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
 import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dart';
-import 'package:securedtrade/features/strategy/domain/usecases/get_trade_setting_usecase.dart';
-import 'package:securedtrade/features/strategy/domain/usecases/save_trade_setting_usecase.dart';
-import 'package:securedtrade/features/strategy/presentation/bloc/strategy_event.dart';
+import 'package:securedtrade/features/strategy/domain/usecases/activate_bot_usecase.dart';
 import 'package:securedtrade/features/strategy/presentation/bloc/strategy_state.dart';
 
 class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
   final GetTradeSettingUseCase tradeSettingUseCase;
   final SaveTradeSettingUseCase saveTradeSettingUseCase;
-  StrategyBloc(this.tradeSettingUseCase, this.saveTradeSettingUseCase)
-    : super((StrategyInitial())) {
+  final ActivateBotUseCase activateBotUseCase;
+  StrategyBloc(
+    this.tradeSettingUseCase,
+    this.saveTradeSettingUseCase,
+    this.activateBotUseCase,
+  ) : super((StrategyInitial())) {
     on<GetTradeSettingData>(getTradeSettingData);
     on<SaveTradeSettingData>(saveTradeSetting);
+    on<SetBotActivation>(activateBot);
   }
 
   FutureOr<void> saveTradeSetting(
@@ -25,10 +28,23 @@ class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
       event.params,
     );
     if (apiResponse.status) {
-      print(apiResponse.message);
       emit(TradeSettingSaved(apiResponse.message.toString()));
+
+      add(GetTradeSettingData(pair: event.params["pair"]));
     } else {
       emit(StrategyFailure(apiResponse.message.toString()));
+    }
+  }
+
+  FutureOr<void> activateBot(
+    SetBotActivation event,
+    Emitter<StrategyState> emit,
+  ) async {
+    ApiResponse apiResponse = await activateBotUseCase.execute(event.pair);
+    if (apiResponse.status) {
+      emit(BotActivatedState(apiResponse.message.toString()));
+    } else {
+      emit(ActivationFailure(apiResponse.message.toString()));
     }
   }
 
@@ -37,10 +53,14 @@ class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
     Emitter<StrategyState> emit,
   ) async {
     ApiResponse apiResponse = await tradeSettingUseCase.execute(event.pair);
-    //
+
     if (apiResponse.data != null) {
-      TradeSetting tradeSetting = apiResponse.data;
-      emit(TradeSettingLoaded(tradeSetting));
+      SpotTradeSettingModel spConfig = apiResponse.data;
+      //TradeSetting s = apiResponse.data;
+
+      emit(TradeSettingLoaded(spConfig));
+    } else {
+      emit(StrategyFailure(apiResponse.message.toString()));
     }
   }
 }

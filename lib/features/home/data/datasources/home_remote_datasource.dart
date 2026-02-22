@@ -41,10 +41,10 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   Future<ApiResponse> getKey() async {
     // TODO: implement getKey
     final res = await ApiClient().post(ApiEndpoints.getApiKey);
-
+    print(res);
     Map data = json.decode(res.toString());
     if (!data.containsKey(AppConstants.apiError)) {
-      return ApiResponse(status: true);
+      return ApiResponse(status: true, data: data);
     } else {
       return ApiResponse(status: false, message: data[AppConstants.apiError]);
     }
@@ -92,10 +92,12 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     final res = await ApiClient().post(
       ApiEndpoints.apiBind,
       data: {
-        "apiKeyEnc": apiKeyEnc,
+        /*"apiKeyEnc": apiKeyEnc,
         "secretKeyEnc": secretKeyEnc,
         "aesKeyEnc": aesKeyEnc,
-        "iv": iv,
+        "iv": iv,*/
+        "apikey": encrypt["apiKey"],
+        "secretkey": encrypt["secretKey"],
         "keyotp": keyOTP,
       },
     );
