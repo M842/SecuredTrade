@@ -12,6 +12,11 @@ class AppConstants {
   static const String apiError = "error";
   static const String apiMessage = "message";
 
+  static const String getIsUserAffiliateUrl =
+      "https://api.nftwall.io:2096/api/call-proc?procedureName=get_rpt_users_data&forprime=0&node=";
+
   static String spotCurrencyWebSocketUrl =
       "wss://stream.binance.com:9443/stream?streams=!miniTicker@arr";
+
+  static var apiSuccessKey = "success";
 }

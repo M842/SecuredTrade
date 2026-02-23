@@ -18,3 +18,12 @@ class AuthFailure extends AuthState {
 }
 
 class RegisterSuccess extends AuthState {}
+class UserSubscribed extends AuthState {
+  final bool isSubscribed;
+  UserSubscribed({required this.isSubscribed});
+}
+
+class UserSubscriptionFailed extends AuthState {
+  final String message;
+  UserSubscriptionFailed(this.message);
+}

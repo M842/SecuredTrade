@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 
 abstract class HomeEvent {}
 
-class LoadHomeEvent extends HomeEvent {}
+class LoadHomeEvent extends HomeEvent {
+  final BuildContext context;
+  LoadHomeEvent(this.context);
+}
 
 class LoadKeyEvent extends HomeEvent {}
 

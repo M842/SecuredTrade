@@ -10,10 +10,12 @@ class HomeLoaded extends HomeState {
   final String messages;
   HomeLoaded(this.messages);
 }
+
 class HomeFailure extends HomeState {
   final String message;
   HomeFailure(this.message);
 }
+
 class SpotCurrenciesLoaded extends HomeState {
   final List<CurrenciesModel> usdtCurrencies;
   final List<CurrenciesModel> btcCurrencies;

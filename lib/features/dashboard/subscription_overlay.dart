@@ -55,7 +55,7 @@ class SubscriptionOverlay extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 38.0, left: 38, top: 10),
                 child: GestureDetector(
                   onTap: () async {
-                    //context.read<AuthBloc>().add(MetamaskRequest());
+                    context.read<AuthBloc>().add(MetamaskRequest());
                   },
                   child: Container(
                     width: double.infinity,

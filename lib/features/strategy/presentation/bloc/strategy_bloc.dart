@@ -28,9 +28,8 @@ class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
       event.params,
     );
     if (apiResponse.status) {
-      emit(TradeSettingSaved(apiResponse.message.toString()));
-
       add(GetTradeSettingData(pair: event.params["pair"]));
+      emit(TradeSettingSaved(apiResponse.message.toString()));
     } else {
       emit(StrategyFailure(apiResponse.message.toString()));
     }
@@ -42,6 +41,7 @@ class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
   ) async {
     ApiResponse apiResponse = await activateBotUseCase.execute(event.pair);
     if (apiResponse.status) {
+      add(GetTradeSettingData(pair: event.pair));
       emit(BotActivatedState(apiResponse.message.toString()));
     } else {
       emit(ActivationFailure(apiResponse.message.toString()));

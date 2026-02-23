@@ -1,4 +1,5 @@
 import 'package:securedtrade/config/path_config.dart';
+
 class CustomBotAppBar extends StatefulWidget {
   const CustomBotAppBar({super.key});
 
@@ -23,6 +24,7 @@ class _CustomBotAppBarState extends State<CustomBotAppBar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              AppSpacing.w8,
               IconButton(
                 onPressed: () {
                   context.pop();
@@ -33,8 +35,9 @@ class _CustomBotAppBarState extends State<CustomBotAppBar> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: ["Strategy\n Details", "Fulfilled\n Orders"]
-                    .map((toElement) {
+                children: ["Strategy\n Details", "Fulfilled\n Orders"].map((
+                  toElement,
+                ) {
                   final index = [
                     "Strategy\n Details",
                     "Fulfilled\n Orders",
@@ -49,22 +52,20 @@ class _CustomBotAppBarState extends State<CustomBotAppBar> {
                             fontWeight: FontWeight.w500,
                             color: AppColors.white,
                             fontSize: 12.5,
-
                           ),
                         ),
                         SizedBox(height: 8),
                         selectedIndex == index
                             ? Container(
-                          height: 1.5,
-                          width: 50,
-                          color: AppColors.white,
-                        )
+                                height: 1.5,
+                                width: 50,
+                                color: AppColors.white,
+                              )
                             : SizedBox(),
                       ],
                     ),
                   );
-                })
-                    .toList(),
+                }).toList(),
               ),
               Spacer(),
             ],

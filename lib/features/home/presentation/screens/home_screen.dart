@@ -14,9 +14,9 @@ class _HomeScreenState extends State<HomeScreen> {
   //CurrencyWebsocketService wc=CurrencyWebsocketService();
   @override
   void initState() {
-  //  wc.call("wss://stream.binance.com:9443/stream?streams=!miniTicker@arr");
+    //  wc.call("wss://stream.binance.com:9443/stream?streams=!miniTicker@arr");
     // TODO: implement initState
-    context.read<HomeBloc>().add(LoadHomeEvent());
+    context.read<HomeBloc>().add(LoadHomeEvent(context));
     context.read<HomeBloc>().add(
       GetSpotCurrencies(url: AppConstants.getSpotCurrencyUrl),
     );

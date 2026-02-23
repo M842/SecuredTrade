@@ -1,4 +1,5 @@
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/main.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,9 +12,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    context.read<AuthBloc>().add(AppStarted());
+    context.read<AuthBloc>().add(AppStarted(context));
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {

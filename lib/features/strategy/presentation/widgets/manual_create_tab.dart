@@ -98,10 +98,7 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
           .spotConfig
           .rsiDca
           .toString();
-
-      setDcsLevels(
-        dca: widget.tradeSettingModel!.data.spotConfig.maxDcaCount.toString(),
-      );
+      dcsLevelList = widget.tradeSettingModel!.data.spotConfig.dcaLevels;
     } else {
       setDcsLevels(dca: editDCACountController.text.trim());
     }
@@ -318,6 +315,7 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
                       borderWidth: 0,
                       padding: 0,
                       onChanged: (val) {
+                        dcsLevelList.clear();
                         for (int i = 1; i <= int.parse(val.data); i++) {
                           dcsLevelList.add(
                             DcaLevel(
@@ -480,38 +478,38 @@ class _ManualCreateTabState extends State<ManualCreateTab> {
         AppButton(
           text: "Save",
           onPressed: () {
-           // if (validation()) {
-              SpotConfig rq = SpotConfig(
-                useEmaFilter: isEmaFilter,
+            // if (validation()) {
+            SpotConfig rq = SpotConfig(
+              useEmaFilter: isEmaFilter,
 
-                initialBuyPercent: double.parse(
-                  editInitialBuyController.text.toString(),
-                ),
-                maxDcaCount: int.parse(editDCACountController.text),
+              initialBuyPercent: double.parse(
+                editInitialBuyController.text.toString(),
+              ),
+              maxDcaCount: int.parse(editDCACountController.text),
 
-                takeProfitPercent: double.parse(
-                  editTakeProfitPercentController.text,
-                ),
-                trailingStopPercent: double.parse(
-                  editTrailingStopPercentController.text,
-                ),
-                rsiEntry: editRSIEntryController.text,
-                rsiDca: editRSIDCAController.text,
-                dcaLevels: dcsLevelList,
-              );
-              final setting = rq.toJson();
-              Map<dynamic, dynamic> params = {
-                "pair": widget.symbol,
+              takeProfitPercent: double.parse(
+                editTakeProfitPercentController.text,
+              ),
+              trailingStopPercent: double.parse(
+                editTrailingStopPercentController.text,
+              ),
+              rsiEntry: editRSIEntryController.text,
+              rsiDca: editRSIDCAController.text,
+              dcaLevels: dcsLevelList,
+            );
+            final setting = rq.toJson();
+            Map<dynamic, dynamic> params = {
+              "pair": widget.symbol,
 
-                "setting": {
-                  "mode": TradingMode.spot.value,
-                  "symbols": widget.symbol,
-                  "spotConfig": setting,
-                },
-              };
+              "setting": {
+                "mode": TradingMode.spot.value,
+                "symbols": widget.symbol,
+                "spotConfig": setting,
+              },
+            };
 
-              DialogUtils.sveTradeSettingDialog(context, params);
-          //  }
+            DialogUtils.sveTradeSettingDialog(context, params);
+            //  }
           },
         ),
         SizedBox(height: 15),

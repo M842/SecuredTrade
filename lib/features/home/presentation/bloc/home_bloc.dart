@@ -1,9 +1,13 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:reown_appkit/appkit_modal.dart';
 import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/core/network/api_response.dart';
+import 'package:securedtrade/features/home/data/models/affilate_user_detail_model.dart';
 import 'package:securedtrade/features/home/domain/usecases/save_api_detail_usecase.dart';
 import 'package:securedtrade/features/home/domain/usecases/send_code_usecase.dart';
+import 'package:securedtrade/main.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetHomeDataUseCase homeDataUseCase;
@@ -14,6 +18,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   List<CurrenciesModel> usdtCurrenciesList = [];
   List<CurrenciesModel> btcCurrenciesList = [];
+
 
   HomeBloc(
     this.homeDataUseCase,
@@ -27,11 +32,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<GetSpotCurrencies>(getSpotCurrencyList);
     on<SentOTP>(sendOtp);
     on<ApiManageRequest>(saveApiCredential);
+
   }
 
   Future<void> _onLoadHome(LoadHomeEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoading());
     try {
+
       ApiResponse apiResponse = await homeDataUseCase.execute();
 
       if (apiResponse.status) {
@@ -132,4 +139,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       emit(HomeError(apiResponse.message.toString()));
     }
   }
+
 }

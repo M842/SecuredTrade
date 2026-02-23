@@ -1,4 +1,5 @@
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/main.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});

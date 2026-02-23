@@ -1,8 +1,11 @@
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/core/services/wallet_connection_service.dart';
 import 'package:securedtrade/features/strategy/domain/usecases/activate_bot_usecase.dart';
 
+WalletConnectService? wcConnectService;
 void main() {
   Env.init(AppEnvironment.dev);
+
   final local = AuthLocalDataSourceImpl();
   final remote = AuthRemoteDataSourceImpl();
   final apiClient = ApiClient();
@@ -13,7 +16,7 @@ void main() {
 
   final strategyRemote = StrategyRemoteDataSourceImpl();
   final strategyRepo = StrategyRepositoryImpl(strategyRemote);
-
+  wcConnectService = WalletConnectService();
   runApp(
     MultiBlocListener(
       listeners: [

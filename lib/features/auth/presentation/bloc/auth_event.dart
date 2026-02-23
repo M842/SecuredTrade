@@ -1,6 +1,11 @@
+import 'package:flutter/cupertino.dart';
+
 abstract class AuthEvent {}
 
-class AppStarted extends AuthEvent {}
+class AppStarted extends AuthEvent {
+  final BuildContext context;
+  AppStarted(this.context);
+}
 
 class LoginRequest extends AuthEvent {
   final String email;
@@ -8,6 +13,9 @@ class LoginRequest extends AuthEvent {
 
   LoginRequest({required this.email, required this.password});
 }
+
+class MetamaskRequest extends AuthEvent {}
+
 
 class RegisterRequest extends AuthEvent {
   final String email,password,userName;

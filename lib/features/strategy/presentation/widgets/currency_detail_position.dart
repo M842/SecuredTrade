@@ -72,51 +72,7 @@ class CurrencyDetailPosition extends StatelessWidget {
               Icon(Icons.question_mark_rounded, size: 20),
             ],
           ),
-          SizedBox(height: 5),
 
-          Row(
-            children: [
-              SizedBox(width: 6),
-              Image.asset(
-                AppStrings.binanceIcon,
-                height: 17,
-                color: AppColors.yellow,
-              ),
-
-              SizedBox(width: 15),
-              mData == null
-                  ? SizedBox()
-                  : ContainerBg(
-                      backgroundColor: Colors.orange.shade50,
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          "One-Shot",
-                          style: getDmSansTextStyle(
-                            fontSize: 12,
-                            color: Colors.orange,
-                          ),
-                        ),
-                      ),
-                    ),
-              SizedBox(width: 15),
-              mData == null
-                  ? SizedBox()
-                  : ContainerBg(
-                      backgroundColor: Colors.blueAccent.withOpacity(.2),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          "Whole Warehouse Mode",
-                          style: getDmSansTextStyle(
-                            fontSize: 12,
-                            color: Colors.blueAccent,
-                          ),
-                        ),
-                      ),
-                    ),
-            ],
-          ),
           SizedBox(height: 20),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,

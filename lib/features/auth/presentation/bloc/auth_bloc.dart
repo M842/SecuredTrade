@@ -1,9 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:reown_appkit/appkit_modal.dart';
 import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:securedtrade/features/auth/domain/usecases/register_usecase.dart';
+import 'package:securedtrade/features/auth/presentation/bloc/auth_state.dart';
+import 'package:securedtrade/features/home/data/models/affilate_user_detail_model.dart';
+import 'package:securedtrade/main.dart';
+import 'package:http/http.dart' as http;
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CheckAuthStatusUseCase checkAuthStatusUseCase;
@@ -11,7 +16,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final RegisterUseCase registerUseCase;
   final LogoutUseCase logoutUseCase;
 
-  bool isSubscribed = true;
+  late String address;
+
+  bool isSubscribed = false;
 
   AuthBloc(
     this.checkAuthStatusUseCase,
@@ -23,6 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginRequest>(onLoginRequested);
     on<RegisterRequest>(register);
     on<Logout>(logout);
+    on<MetamaskRequest>(walletConnecting);
   }
   Future<void> onLoginRequested(
     LoginRequest event,
@@ -42,7 +50,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> initial(AppStarted event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
+    await wcConnectService!.initializeWallet(event.context);
+    await Future.delayed(Duration(seconds: 1));
 
+    isSubscribed = wcConnectService!.appKitModal.isConnected;
     final t = await checkAuthStatusUseCase.execute();
     emit(t ? Authenticated() : Unauthenticated());
   }
@@ -75,5 +86,50 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> logout(Logout event, Emitter<AuthState> emit) async {
     await logoutUseCase.execute();
+  }
+
+  FutureOr<void> walletConnecting(
+    MetamaskRequest event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    await wcConnectService!.connect().whenComplete(() async {
+      if (wcConnectService!.appKitModal.isConnected) {
+        address = (wcConnectService!.appKitModal.session!.getAddress(
+          "eip155",
+        ))!;
+        final result = await getIsAffiliateUser();
+        isSubscribed = result;
+
+        if (!result) {
+          emit(
+            UserSubscriptionFailed(
+              "Address not subscribed. Kindly complete subscription process",
+            ),
+          );
+        } else {
+          emit(UserSubscribed(isSubscribed: isSubscribed));
+        }
+      }
+    });
+  }
+
+  Future getIsAffiliateUser() async {
+    String url = "${AppConstants.getIsUserAffiliateUrl}$address";
+    final httpResponse = await http.get(Uri.parse(url));
+    Map params = json.decode(httpResponse.body);
+    if (params[AppConstants.apiSuccessKey]) {
+      AffiliateUserDetailModel m = affiliateUserDetailFromJson(
+        httpResponse.body,
+      );
+      print(m.data.first.isNotEmpty);
+      if (m.data.first.isNotEmpty) {
+        return m.data.first.first.isActive;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 }
