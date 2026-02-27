@@ -29,14 +29,14 @@ class StrategyRemoteDataSourceImpl implements StrategyRemoteDataSource {
       return ApiResponse(
         status: false,
         message: mData[AppConstants.apiError],
-        data: null,
+        data: mData,
       );
     }
     final data = mData["data"];
     if (data == null || (data is Map && data.isEmpty)) {
       return ApiResponse(
         status: false,
-        message: "Please setup trade setting first",
+        message: "Please set up trade setting first",
         data: null,
       );
     }

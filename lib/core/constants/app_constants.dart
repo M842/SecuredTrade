@@ -19,4 +19,7 @@ class AppConstants {
       "wss://stream.binance.com:9443/stream?streams=!miniTicker@arr";
 
   static var apiSuccessKey = "success";
+
+  static const String symbolKey="symbol";
+  static const String tradingModeKey="tradingMode";
 }

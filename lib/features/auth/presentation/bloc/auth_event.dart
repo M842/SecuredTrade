@@ -3,8 +3,7 @@ import 'package:flutter/cupertino.dart';
 abstract class AuthEvent {}
 
 class AppStarted extends AuthEvent {
-  final BuildContext context;
-  AppStarted(this.context);
+
 }
 
 class LoginRequest extends AuthEvent {

@@ -24,7 +24,12 @@ class Currencies extends StatelessWidget {
           onTap: () {
             context.push(
               AppRoutePaths.selectedCurrencyDetails,
-              extra: data.symbol,
+              extra: {
+                AppConstants.symbolKey: data.symbol,
+                AppConstants.tradingModeKey: modeIndex == 0
+                    ? TradingMode.spot
+                    : TradingMode.future,
+              },
             );
             // Get.to(CurrencyChartScreen(selectedCurrency: data.symbol));
           },

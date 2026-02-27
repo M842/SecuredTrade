@@ -3,11 +3,9 @@ import 'dart:convert';
 
 import 'package:reown_appkit/appkit_modal.dart';
 import 'package:securedtrade/config/path_config.dart';
-import 'package:securedtrade/features/auth/domain/usecases/logout_usecase.dart';
-import 'package:securedtrade/features/auth/domain/usecases/register_usecase.dart';
-import 'package:securedtrade/features/auth/presentation/bloc/auth_state.dart';
+import 'package:securedtrade/core/services/wallet_connection_service.dart';
 import 'package:securedtrade/features/home/data/models/affilate_user_detail_model.dart';
-import 'package:securedtrade/main.dart';
+
 import 'package:http/http.dart' as http;
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -50,9 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> initial(AppStarted event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
-    await wcConnectService!.initializeWallet(event.context);
-    await Future.delayed(Duration(seconds: 1));
-
+    await wcConnectService!.initializeWallet(rootNavigatorKey.currentContext!);
     isSubscribed = wcConnectService!.appKitModal.isConnected;
     final t = await checkAuthStatusUseCase.execute();
     emit(t ? Authenticated() : Unauthenticated());
@@ -93,6 +89,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
+
     await wcConnectService!.connect().whenComplete(() async {
       if (wcConnectService!.appKitModal.isConnected) {
         address = (wcConnectService!.appKitModal.session!.getAddress(

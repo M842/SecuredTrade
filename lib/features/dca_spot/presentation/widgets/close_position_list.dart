@@ -3,6 +3,7 @@ import 'package:securedtrade/config/path_config.dart';
 class ClosePositionList extends StatelessWidget {
   final int ind;
   final TradingMode mode;
+
   const ClosePositionList({super.key, required this.ind, required this.mode});
 
   @override
@@ -41,15 +42,19 @@ class ClosePositionList extends StatelessWidget {
                           ? Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: ContainerBg(
-                                backgroundColor: Color(0xffDCFCE7),
+                                backgroundColor: ind == 0
+                                    ? Color(0xffDCFCE7)
+                                    : Color(0xffFFE2E2),
                                 child: Padding(
                                   padding: const EdgeInsets.all(4.0),
                                   child: Text(
-                                    "LONG",
+                                    ind == 0 ? "LONG" : "SHORT",
                                     style: getDmSansTextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 8,
-                                      color: Color(0xff008236),
+                                      color: ind == 0
+                                          ? Color(0xff008236)
+                                          : AppColors.red,
                                     ),
                                   ),
                                 ),

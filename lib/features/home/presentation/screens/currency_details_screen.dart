@@ -12,9 +12,11 @@ CurrencyWebsocketService wc = CurrencyWebsocketService();
 
 class SelectedCurrencyDetailsScreen extends StatefulWidget {
   final dynamic selectedCurrency;
+  final TradingMode tradingMode;
   const SelectedCurrencyDetailsScreen({
     super.key,
     required this.selectedCurrency,
+    required this.tradingMode,
   });
 
   @override
@@ -41,6 +43,7 @@ class _SelectedCurrencyDetailsScreenState
   @override
   void initState() {
     super.initState();
+    print("object${widget.tradingMode.name}");
     wc.call(
       "wss://stream.binance.com:9443/ws/${widget.selectedCurrency.toString().toLowerCase()}@miniTicker",
       widget.selectedCurrency,
@@ -552,7 +555,10 @@ class _SelectedCurrencyDetailsScreenState
               onPressed: () {
                 context.push(
                   AppRoutePaths.createBot,
-                  extra: widget.selectedCurrency.toString(),
+                  extra: {
+                    AppConstants.symbolKey: widget.selectedCurrency.toString(),
+                    AppConstants.tradingModeKey: widget.tradingMode,
+                  },
                 );
               },
             ),

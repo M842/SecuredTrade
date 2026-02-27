@@ -12,11 +12,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    context.read<AuthBloc>().add(AppStarted(context));
     super.initState();
+    context.read<AuthBloc>().add(AppStarted());
   }
-
-
 
   @override
   Widget build(BuildContext context) {

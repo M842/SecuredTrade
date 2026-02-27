@@ -27,6 +27,11 @@ class ActivationFailure extends StrategyState {
   ActivationFailure(this.messages);
 }
 
+class GetTradeSettingEmpty extends StrategyState {
+  final String messages;
+  GetTradeSettingEmpty(this.messages);
+}
+
 class StrategyFailure extends StrategyState {
   final String message;
   StrategyFailure(this.message);

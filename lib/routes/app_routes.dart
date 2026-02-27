@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/core/services/wallet_connection_service.dart';
 import 'package:securedtrade/features/auth/presentation/screens/login_screen.dart';
 import 'package:securedtrade/features/auth/presentation/screens/register_screen.dart';
 import 'package:securedtrade/features/auth/presentation/screens/splash_screen.dart';
@@ -7,7 +9,6 @@ import 'package:securedtrade/features/dashboard/dashboard_screen.dart';
 import 'package:securedtrade/features/dashboard/notification_screen.dart';
 import 'package:securedtrade/features/home/presentation/screens/api_manage_screen.dart';
 import 'package:securedtrade/features/home/presentation/screens/currency_details_screen.dart';
-import 'package:securedtrade/features/home/presentation/screens/home_screen.dart';
 import 'package:securedtrade/features/home/presentation/screens/profit_screen.dart';
 import 'package:securedtrade/features/home/presentation/screens/reward_details_screen.dart';
 import 'package:securedtrade/features/home/presentation/screens/user_guide_screen.dart';
@@ -17,10 +18,10 @@ import 'package:securedtrade/features/strategy/presentation/screens/create_bot_s
 import 'package:securedtrade/features/strategy/presentation/screens/margin_config_screen.dart';
 import 'package:securedtrade/features/strategy/presentation/screens/trade_setting_screen.dart';
 import 'package:securedtrade/features/home/presentation/screens/deposit_screen.dart';
-import 'package:securedtrade/features/home/presentation/screens/wallet_screen.dart';
-import 'package:securedtrade/routes/app_route_paths.dart';
+import 'package:securedtrade/main.dart';
 
 final GoRouter router = GoRouter(
+  navigatorKey: rootNavigatorKey,
   initialLocation: AppRoutePaths.root,
   routes: [
     GoRoute(
@@ -58,8 +59,12 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoutePaths.createBot,
       builder: (context, state) {
-        final symbol2 = state.extra as String;
-        return CreateBotScreen(symbol: symbol2);
+        //final symbol2 = state.extra as String;
+        final params = state.extra as Map;
+        return CreateBotScreen(
+          symbol: params[AppConstants.symbolKey],
+          tradingMode: params[AppConstants.tradingModeKey],
+        );
       },
     ),
     GoRoute(
@@ -115,8 +120,12 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoutePaths.selectedCurrencyDetails,
       builder: (context, state) {
-        final curr = state.extra as String;
-        return SelectedCurrencyDetailsScreen(selectedCurrency: curr);
+        final params = state.extra as Map;
+
+        return SelectedCurrencyDetailsScreen(
+          selectedCurrency: params[AppConstants.symbolKey],
+          tradingMode: params[AppConstants.tradingModeKey],
+        );
       },
     ),
     GoRoute(

@@ -1,4 +1,5 @@
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/main.dart';
 
 class SubscriptionOverlay extends StatelessWidget {
   const SubscriptionOverlay({super.key});
@@ -55,6 +56,7 @@ class SubscriptionOverlay extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 38.0, left: 38, top: 10),
                 child: GestureDetector(
                   onTap: () async {
+
                     context.read<AuthBloc>().add(MetamaskRequest());
                   },
                   child: Container(

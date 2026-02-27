@@ -1,18 +1,17 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
 import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dart';
 import 'package:securedtrade/features/strategy/presentation/bloc/strategy_state.dart';
 
-class ManualCreateArgs {
-  final SpotTradeSettingModel? tradeSettingModel;
-  final String symbol;
-
-  ManualCreateArgs({required this.tradeSettingModel, required this.symbol});
-}
-
 class CreateBotScreen extends StatefulWidget {
   final String symbol;
-  const CreateBotScreen({super.key, required this.symbol});
+  final TradingMode tradingMode;
+  const CreateBotScreen({
+    super.key,
+    required this.symbol,
+    required this.tradingMode,
+  });
 
   @override
   State<CreateBotScreen> createState() => _CreateBotScreenState();
@@ -22,6 +21,7 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    print(widget.tradingMode.name);
     context.read<StrategyBloc>().add(GetTradeSettingData(pair: widget.symbol));
     super.initState();
   }
@@ -37,7 +37,18 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
 
           BlocListener<StrategyBloc, StrategyState>(
             listener: (BuildContext context, StrategyState state) {
-              if (state is StrategyFailure) {
+              if (state is GetTradeSettingEmpty) {
+                //SnackbarHelper.show(context, message: state.message);
+                Fluttertoast.showToast(
+                  msg: state.messages,
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: AppColors.grey4,
+                  textColor: Colors.black,
+                  fontSize: 16.0,
+                );
+              } else if (state is StrategyFailure) {
                 SnackbarHelper.show(context, message: state.message);
               } else if (state is BotActivatedState) {
                 SnackbarHelper.show(
@@ -70,6 +81,7 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
                               CurrencyDetailPosition(
                                 symbol: widget.symbol,
                                 mData: tradeSetting,
+                                mode: widget.tradingMode,
                               ),
                               SizedBox(height: 10),
 
@@ -85,60 +97,63 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
                                   topPadding: 5,
                                   bottomPadding: 10,
                                   height: 70,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return InitialBuyDialog();
-                                        },
-                                      );
-                                    },
-                                    child: Container(
-                                      color: Colors.transparent,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            "Initial Buy In Percent",
-                                            style: getDmSansTextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: AppColors.black,
-                                              fontSize: 16,
-                                            ),
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "Initial Buy In Percent",
+                                          style: getDmSansTextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.black,
+                                            fontSize: 16,
                                           ),
-                                          Spacer(),
-                                          ContainerBg(
-                                            bWidth: 1,
-                                            backgroundColor: AppColors.grey5
-                                                .withOpacity(.7),
-                                            borderColor: AppColors.grey6
-                                                .withOpacity(.3),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                top: 8.0,
-                                                bottom: 8,
-                                                left: 15,
-                                                right: 15,
-                                              ),
-                                              child: Text(
-                                                tradeSetting == null
-                                                    ? ""
-                                                    : tradeSetting
-                                                          .data
-                                                          .spotConfig
-                                                          .initialBuyPercent
-                                                          .toString(),
-                                                style: getDmSansTextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14,
-                                                  color: AppColors.black,
+                                        ),
+                                        Spacer(),
+                                        ContainerBg(
+                                          bWidth: 1,
+                                          backgroundColor: AppColors.grey5
+                                              .withOpacity(.7),
+                                          borderColor: AppColors.grey6
+                                              .withOpacity(.3),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 8.0,
+                                              bottom: 8,
+                                              left: 15,
+                                              right: 15,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  tradeSetting == null
+                                                      ? "0.0"
+                                                      : tradeSetting
+                                                            .data
+                                                            .spotConfig
+                                                            .initialBuyPercent
+                                                            .toString(),
+                                                  style: getDmSansTextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14,
+                                                    color: AppColors.black,
+                                                  ),
                                                 ),
-                                              ),
+
+                                                Text(
+                                                  " %",
+                                                  style: getDmSansTextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: AppColors.black,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          AppSpacing.w8,
-                                        ],
-                                      ),
+                                        ),
+                                        AppSpacing.w8,
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -175,11 +190,26 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
                                         activeThumbColor: AppColors.white,
                                         inactiveTrackColor: tradeSetting == null
                                             ? AppColors.white
+                                            : !tradeSetting
+                                                  .data
+                                                  .spotConfig
+                                                  .useEmaFilter
+                                            ? AppColors.white
                                             : AppColors.primary,
                                         activeColor: tradeSetting == null
                                             ? AppColors.white
+                                            : !tradeSetting
+                                                  .data
+                                                  .spotConfig
+                                                  .useEmaFilter
+                                            ? AppColors.white
                                             : AppColors.secondary,
                                         activeTrackColor: tradeSetting == null
+                                            ? AppColors.white
+                                            : !tradeSetting
+                                                  .data
+                                                  .spotConfig
+                                                  .useEmaFilter
                                             ? AppColors.white
                                             : AppColors.primary,
                                         inactiveThumbColor: AppColors.primary,

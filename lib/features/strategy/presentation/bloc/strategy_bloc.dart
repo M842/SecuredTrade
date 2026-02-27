@@ -54,13 +54,21 @@ class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
   ) async {
     ApiResponse apiResponse = await tradeSettingUseCase.execute(event.pair);
 
-    if (apiResponse.data != null) {
+    if (apiResponse.data != null && apiResponse.status) {
       SpotTradeSettingModel spConfig = apiResponse.data;
       //TradeSetting s = apiResponse.data;
 
       emit(TradeSettingLoaded(spConfig));
     } else {
-      emit(StrategyFailure(apiResponse.message.toString()));
+      print(apiResponse.data);
+
+      if (apiResponse.data != null) {
+        Map<String, dynamic> data = apiResponse.data;
+        emit(StrategyFailure(apiResponse.message.toString()));
+      } else {
+        print("GETIN");
+        emit(GetTradeSettingEmpty(apiResponse.message.toString()));
+      }
     }
   }
 }

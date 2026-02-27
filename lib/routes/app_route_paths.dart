@@ -1,3 +1,13 @@
+
+import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
+
+class ManualCreateArgs {
+  final SpotTradeSettingModel? tradeSettingModel;
+  final String symbol;
+
+  ManualCreateArgs({required this.tradeSettingModel, required this.symbol});
+}
+
 class AppRoutePaths {
   static const String root = "/";
   static const String login = "/login";

@@ -1,6 +1,9 @@
 import 'package:reown_appkit/reown_appkit.dart';
 import 'package:flutter/material.dart';
 
+WalletConnectService? wcConnectService;
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
 class WalletConnectService {
   late final ReownAppKitModal appKitModal;
   late final ReownAppKit appKit;
@@ -9,6 +12,7 @@ class WalletConnectService {
 
   //d8c3c8765c383efadd53e57fd3d7faa8
   initializeWallet(BuildContext context) async {
+    print("XontextInitializeWallet");
     appKit = ReownAppKit(
       core: ReownCore(projectId: "7f6c6821b45b28ce57e6811a6c2c85f4"),
       metadata: const PairingMetadata(

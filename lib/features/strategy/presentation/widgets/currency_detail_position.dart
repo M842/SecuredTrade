@@ -1,15 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/features/home/presentation/screens/currency_details_screen.dart';
 import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
 import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dart';
+import 'package:securedtrade/shared/widgets/app_tabs_view.dart';
 
 class CurrencyDetailPosition extends StatelessWidget {
   final String symbol;
   final SpotTradeSettingModel? mData;
+  final TradingMode mode;
   const CurrencyDetailPosition({
     super.key,
     required this.symbol,
     required this.mData,
+    required this.mode,
   });
 
   @override
@@ -56,7 +60,37 @@ class CurrencyDetailPosition extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10),
-              ContainerBg(
+
+              mode.name == TradingMode.future.name
+                  ? ContainerBg(
+                      bWidth: 1,
+                      borderColor: AppColors.green.withOpacity(.8),
+                      backgroundColor: Color(0xffDCFCE7),
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Text(
+                          "LONG",
+                          style: GoogleFonts.dmSans(
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff008236),
+                            fontSize: 10,
+                            letterSpacing: 1.1,
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
+
+              AppSpacing.w8,
+              mode.name == TradingMode.future.name
+                  ? Icon(
+                      Icons.change_circle_rounded,
+                      size: 20,
+                      color: AppColors.primary.withOpacity(.85),
+                    )
+                  : SizedBox(),
+
+              /*ContainerBg(
                 radius: 40,
                 backgroundColor: AppColors.primary.withOpacity(.3),
                 child: Padding(
@@ -67,9 +101,9 @@ class CurrencyDetailPosition extends StatelessWidget {
                     size: 15,
                   ),
                 ),
-              ),
+              ),*/
               Spacer(),
-              Icon(Icons.question_mark_rounded, size: 20),
+              // Icon(Icons.question_mark_rounded, size: 20),
             ],
           ),
 
