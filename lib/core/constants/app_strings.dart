@@ -25,7 +25,7 @@ class AppStrings {
 
   static const String inviteFriend = "assets/images/homeuser.png";
   static const String userGuide = "assets/images/user-guideicon.png";
-  static const String mentor = "assets/images/mentor.png";
+  static const String telegramIcon = "assets/images/telegram_icon.png";
   static const String matamaskIcon = "assets/images/maskmask_icon.png";
   static const String apiManage = "assets/images/api-icon.png";
   static const String aiTradingIcon =
@@ -128,8 +128,17 @@ class AppStrings {
 
   static String closeIcon = "assets/images/closeIcon.png";
 
-  static String errorIcon="assets/images/error2_icon.png";
-  static String checkedIcon="assets/images/checked_icon.png";
+  static String errorIcon = "assets/images/error2_icon.png";
+  static String checkedIcon = "assets/images/checked_icon.png";
+
+  static const apiResultKey = "result";
+  static const apiSuccessKey = "success";
+
+  static const String getOZoneTransactionResultUrl =
+      "https://ozonescan.com/api/v2/transactions/";
+
+  static const String getTestNetOZoneTransactionResultUrl =
+      "https://testnet.ozonescan.com/api/v2/transactions/";
 }
 
 List<String> recordAnalysisList = [
@@ -144,3 +153,4 @@ List<String> rewardTabsList = [
   "Pyramid Levels",
   "Royalty Levels",
 ];
+//https://ozonescan.com/api/v2/transactions/0xd700128eb50c80c48de7a635c7683e02b88fb6ca25efb00be6bdc7e7ce802bda

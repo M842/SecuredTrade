@@ -1,17 +1,27 @@
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
 import 'package:reown_appkit/reown_appkit.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:http/http.dart' as httpClient;
 
 class Web3Service {
   late Web3Client _client;
 
   Web3Service(String rpcUrl) {
-    _client = Web3Client(rpcUrl, http.Client());
+    _client = Web3Client(rpcUrl, Client());
   }
 
-  DeployedContract _loadContract(String abi, String contractAddress) {
+  Future<DeployedContract> loadContract(
+    String contractAbi,
+    String contractAddress,
+  ) async {
+    String abi = await rootBundle.loadString(contractAbi);
+    final abiJson = jsonDecode(abi);
+    final abi2 = jsonEncode(abiJson);
     return DeployedContract(
-      ContractAbi.fromJson(abi, ""),
+      ContractAbi.fromJson(abi2, ""),
       EthereumAddress.fromHex(contractAddress),
     );
   }
@@ -22,11 +32,19 @@ class Web3Service {
     required String functionName,
     required List<dynamic> params,
   }) async {
-    final contract = _loadContract(abi, contractAddress);
-    final function = contract.function(functionName);
+    final contract = await loadContract(abi, contractAddress);
+    //final function = contract.function(functionName);
+
+    final function = contract.functions
+        .where((f) => f.name == functionName)
+        .toList();
+
+    if (function.isEmpty) {
+      throw Exception("Function $functionName not found in ABI");
+    }
     final result = await _client.call(
       contract: contract,
-      function: function,
+      function: function.first,
       params: params,
     );
 

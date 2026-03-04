@@ -22,6 +22,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    context.read<HomeBloc>().add(GetNotificationEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -269,7 +276,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   ],
                 ),
               ),
-              AppSpacing.h12
+              AppSpacing.h12,
             ],
           ),
         ),

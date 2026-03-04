@@ -61,7 +61,7 @@ class CurrencyDetailPosition extends StatelessWidget {
               ),
               SizedBox(width: 10),
 
-              mode.name == TradingMode.future.name
+            /*  mode.name == TradingMode.future.name
                   ? ContainerBg(
                       bWidth: 1,
                       borderColor: AppColors.green.withOpacity(.8),
@@ -85,10 +85,10 @@ class CurrencyDetailPosition extends StatelessWidget {
               mode.name == TradingMode.future.name
                   ? Icon(
                       Icons.change_circle_rounded,
-                      size: 20,
-                      color: AppColors.primary.withOpacity(.85),
+                      size: 22,
+                      color: AppColors.secondary.withOpacity(.85),
                     )
-                  : SizedBox(),
+                  : SizedBox(),*/
 
               /*ContainerBg(
                 radius: 40,

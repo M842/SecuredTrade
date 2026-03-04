@@ -40,4 +40,8 @@ class AppRoutePaths {
   static String marginConfig="/margin_config";
 
   static String notification="/notification";
+
+  static String futureBotConfig="/future_bot_config";
+
+  static String telegram="/telegram_auth";
 }

@@ -15,6 +15,8 @@ class LoginRequest extends AuthEvent {
 
 class MetamaskRequest extends AuthEvent {}
 
+class SubscribeInvestEvent extends AuthEvent {}
+
 
 class RegisterRequest extends AuthEvent {
   final String email,password,userName;

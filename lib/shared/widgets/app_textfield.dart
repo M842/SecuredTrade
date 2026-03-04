@@ -108,7 +108,7 @@ class _AppTextFieldState extends State<AppTextField> {
                   ),
                 ),
               ),
-        SizedBox(height: 5, width: 0),
+        //SizedBox(height: 5, width: 0),
         TextFormField(
           textAlign: widget.align,
           cursorColor: AppColors.primary,

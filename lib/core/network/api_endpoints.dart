@@ -11,5 +11,9 @@ class ApiEndpoints {
 
   static String getTradeSetting = "/getManualSettings";
   static String saveTradeSetting = "/SaveSettings";
-  static String createBot = "/CreateBot";
+  static String createBot = "/ActivateBot";
+
+  static String stopBot = "/StopBot";
+  static String getNotification = "/getNotification";
+  static String checkTokenStatus = "/CheckTokenStatus";
 }

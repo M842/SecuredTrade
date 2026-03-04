@@ -1,13 +1,16 @@
 import 'package:securedtrade/config/path_config.dart';
 
 class TradingBanner extends StatelessWidget {
-  const TradingBanner({super.key});
+  final double allPadding;
+  final String title;
+  const TradingBanner({super.key, this.allPadding = 15, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(15),
+      margin: EdgeInsets.all(allPadding),
       height: 175,
+      width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         gradient: LinearGradient(
@@ -25,7 +28,7 @@ class TradingBanner extends StatelessWidget {
               children: [
                 SizedBox(height: 0, width: 0),
                 Text(
-                  "Welcome Agilan,",
+                  title,
                   style: getDmSansTextStyle(
                     fontWeight: FontWeight.w400,
                     color: AppColors.white,
@@ -48,6 +51,11 @@ class TradingBanner extends StatelessWidget {
                   text: "Invest Today",
                   textColor: AppColors.blue,
                   onPressed: () {
+                    showBottomSheet(
+                      context: context,
+                      builder: (_) => SubscriptionOverlay(),
+                    );
+
                     //context.read<AuthBloc>().getIsAffiliateUser();
                   },
                   backgroundColor: AppColors.white,

@@ -16,10 +16,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     //  wc.call("wss://stream.binance.com:9443/stream?streams=!miniTicker@arr");
     // TODO: implement initState
+    context.read<HomeBloc>().add(StartAutoCheckEvent());
     context.read<HomeBloc>().add(LoadHomeEvent(context));
     context.read<HomeBloc>().add(
       GetSpotCurrencies(url: AppConstants.getSpotCurrencyUrl),
     );
+
     super.initState();
   }
 
@@ -43,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: AppColors.background,
           body: ListView(
             children: [
-              TradingBanner(),
+              TradingBanner(title: "Welcome Agilan,"),
               Padding(
                 padding: const EdgeInsets.only(
                   top: 4.0,

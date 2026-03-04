@@ -34,9 +34,7 @@ class StrategyModeDialog extends StatelessWidget {
                       children: List.generate(
                         3,
                         (index) => Padding(
-                          padding: PaddingUtils.only(
-                            top: 5,bottom: 5
-                          ),
+                          padding: PaddingUtils.only(top: 5, bottom: 5),
                           child: Column(
                             children: [
                               AppSpacing.h4,

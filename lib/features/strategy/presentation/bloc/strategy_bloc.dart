@@ -4,20 +4,24 @@ import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
 import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dart';
 import 'package:securedtrade/features/strategy/domain/usecases/activate_bot_usecase.dart';
+import 'package:securedtrade/features/strategy/domain/usecases/stop_bot_usecase.dart';
 import 'package:securedtrade/features/strategy/presentation/bloc/strategy_state.dart';
 
 class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
   final GetTradeSettingUseCase tradeSettingUseCase;
   final SaveTradeSettingUseCase saveTradeSettingUseCase;
   final ActivateBotUseCase activateBotUseCase;
+  final StopBotUseCase stopBotUseCase;
   StrategyBloc(
     this.tradeSettingUseCase,
     this.saveTradeSettingUseCase,
     this.activateBotUseCase,
+      this.stopBotUseCase
   ) : super((StrategyInitial())) {
     on<GetTradeSettingData>(getTradeSettingData);
     on<SaveTradeSettingData>(saveTradeSetting);
     on<SetBotActivation>(activateBot);
+    on<StopBot>(stopBot);
   }
 
   FutureOr<void> saveTradeSetting(
@@ -70,5 +74,9 @@ class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
         emit(GetTradeSettingEmpty(apiResponse.message.toString()));
       }
     }
+  }
+
+  FutureOr<void> stopBot(StopBot event, Emitter<StrategyState> emit) async{
+    final apiResponse=await stopBotUseCase.execute();
   }
 }

@@ -21,4 +21,10 @@ class StrategyRepositoryImpl implements StrategyRepository {
     // TODO: implement activateBot
     return remote.activateBot(pair);
   }
+
+  @override
+  Future<ApiResponse> stopBot() {
+    // TODO: implement stopBot
+    return remote.stopBot();
+  }
 }

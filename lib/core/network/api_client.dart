@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:securedtrade/config/env.dart';
+import 'package:securedtrade/core/constants/app_strings.dart';
 import 'package:securedtrade/core/network/network_exceptions.dart';
 
 class ApiClient {
@@ -34,13 +37,35 @@ class ApiClient {
   }
 
   Future<Response> post(String path, {dynamic data}) async {
-    print('🆔 ApiClient hash (post): ${hashCode} $data');
     try {
       final response = await dio.post(path, data: data);
       return response;
     } on DioException catch (e) {
       print(e.response?.statusCode);
       throw NetworkException(NetworkException.getDioErrorMessage(e));
+    }
+  }
+
+  Future<String> getOZoneTransactionStatus({required String txhash}) async {
+    try {
+      await Future.delayed(Duration(seconds: 5));
+      String url = AppStrings.getTestNetOZoneTransactionResultUrl + txhash;
+
+      final response = await http.get(Uri.parse(url));
+      print(response);
+      Map data = json.decode(response.body);
+      if (data[AppStrings.apiResultKey] == AppStrings.apiSuccessKey) {
+        return AppStrings.apiSuccessKey;
+      } else {
+        //print("RESP${data["revert_reason"]["parameters"][0]["value"]}");
+        //return data["revert_reason"]["parameters"];
+        String res = data["revert_reason"]["parameters"][0]["value"];
+        return "$res transaction failed";
+        //return "${res.toUpperCase()} Transaction failed ";
+      }
+    } catch (exce) {
+      print("Exception${exce.toString()}");
+      return exce.toString();
     }
   }
 }

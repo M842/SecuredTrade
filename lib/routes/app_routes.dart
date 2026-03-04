@@ -4,6 +4,7 @@ import 'package:securedtrade/core/services/wallet_connection_service.dart';
 import 'package:securedtrade/features/auth/presentation/screens/login_screen.dart';
 import 'package:securedtrade/features/auth/presentation/screens/register_screen.dart';
 import 'package:securedtrade/features/auth/presentation/screens/splash_screen.dart';
+import 'package:securedtrade/features/auth/presentation/screens/telegram_loign_screen.dart';
 import 'package:securedtrade/features/auth/presentation/screens/verfication_screen.dart';
 import 'package:securedtrade/features/dashboard/dashboard_screen.dart';
 import 'package:securedtrade/features/dashboard/notification_screen.dart';
@@ -87,6 +88,11 @@ final GoRouter router = GoRouter(
       path: AppRoutePaths.notification,
       builder: (context, state) => const NotificationScreen(),
     ),
+  GoRoute(
+      path: AppRoutePaths.telegram,
+      builder: (context, state) => const TelegramLoginPage(),
+    ),
+
     GoRoute(
       path: AppRoutePaths.userGuide,
       builder: (context, state) => const UserGuideScreen(),

@@ -1,6 +1,10 @@
 import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/core/services/wallet_connection_service.dart';
+import 'package:securedtrade/features/home/domain/usecases/check_token_status_usecase.dart';
+import 'package:securedtrade/features/home/domain/usecases/get_notification_usecase.dart';
 import 'package:securedtrade/features/strategy/domain/usecases/activate_bot_usecase.dart';
+import 'package:securedtrade/features/strategy/domain/usecases/stop_bot_usecase.dart';
+
 void main() {
   Env.init(AppEnvironment.dev);
   wcConnectService = WalletConnectService();
@@ -33,6 +37,8 @@ void main() {
             GetSpotCurrencyUseCase(homeRepo),
             SendCodeUseCase(homeRepo),
             SaveApiDetailUseCase(homeRepo),
+            GetNotificationUseCase(homeRepo),
+            CheckTokenStatusUseCase(homeRepo),
           ),
         ),
 
@@ -41,6 +47,7 @@ void main() {
             GetTradeSettingUseCase(strategyRepo),
             SaveTradeSettingUseCase(strategyRepo),
             ActivateBotUseCase(strategyRepo),
+            StopBotUseCase(strategyRepo),
           ),
         ),
       ],
@@ -55,6 +62,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+
       routerConfig: router,
       debugShowCheckedModeBanner: false,
     );

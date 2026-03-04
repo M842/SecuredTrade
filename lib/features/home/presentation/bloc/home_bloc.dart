@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:reown_appkit/appkit_modal.dart';
 import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/core/network/api_response.dart';
-import 'package:securedtrade/features/home/data/models/affilate_user_detail_model.dart';
-import 'package:securedtrade/features/home/domain/usecases/save_api_detail_usecase.dart';
-import 'package:securedtrade/features/home/domain/usecases/send_code_usecase.dart';
-import 'package:securedtrade/main.dart';
+import 'package:securedtrade/core/services/wallet_connection_service.dart';
+import 'package:securedtrade/core/utils/dialog_utils.dart';
+import 'package:securedtrade/features/home/domain/usecases/check_token_status_usecase.dart';
+import 'package:securedtrade/features/home/domain/usecases/get_notification_usecase.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetHomeDataUseCase homeDataUseCase;
@@ -15,10 +12,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetSpotCurrencyUseCase getSpotCurrencyUseCase;
   final SendCodeUseCase sendCodeUseCase;
   final SaveApiDetailUseCase saveApiCredUseCase;
+  final GetNotificationUseCase getNotificationUseCase;
+  final CheckTokenStatusUseCase checkTokenStatusUseCase;
 
   List<CurrenciesModel> usdtCurrenciesList = [];
   List<CurrenciesModel> btcCurrenciesList = [];
 
+  Timer? timer;
 
   HomeBloc(
     this.homeDataUseCase,
@@ -26,19 +26,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this.getSpotCurrencyUseCase,
     this.sendCodeUseCase,
     this.saveApiCredUseCase,
+    this.getNotificationUseCase,
+    this.checkTokenStatusUseCase,
   ) : super(HomeInitial()) {
     on<LoadHomeEvent>(_onLoadHome);
     on<LoadKeyEvent>(getApiKeys);
     on<GetSpotCurrencies>(getSpotCurrencyList);
     on<SentOTP>(sendOtp);
     on<ApiManageRequest>(saveApiCredential);
-
+    on<GetNotificationEvent>(getNotification);
+    on<StartAutoCheckEvent>(onStartAutoCheck);
+    on<CheckTokenStatusEvent>(onCheckTokenStatus);
   }
 
   Future<void> _onLoadHome(LoadHomeEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoading());
     try {
-
       ApiResponse apiResponse = await homeDataUseCase.execute();
 
       if (apiResponse.status) {
@@ -140,4 +143,35 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
+  FutureOr<void> getNotification(
+    GetNotificationEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    final apiResponse = await getNotificationUseCase.execute();
+    if (apiResponse.status) {}
+  }
+
+  FutureOr<void> onStartAutoCheck(
+    StartAutoCheckEvent event,
+    Emitter<HomeState> emit,
+  ) {
+    timer = Timer.periodic(
+      Duration(minutes: 20),
+      (_) => add(CheckTokenStatusEvent()),
+    );
+  }
+
+  FutureOr<void> onCheckTokenStatus(
+    CheckTokenStatusEvent event,
+    Emitter<HomeState> emit,
+  ) async {
+    final apiResponse = await checkTokenStatusUseCase.execute();
+    if (!apiResponse.status) {
+      DialogUtils.forceLogout(
+        context: rootNavigatorKey.currentContext!,
+        title: "Session Expired",
+        message: "Your session has expired. Please login again.",
+      );
+    }
+  }
 }

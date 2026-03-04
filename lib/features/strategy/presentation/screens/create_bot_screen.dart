@@ -1,8 +1,5 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:securedtrade/config/path_config.dart';
-import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
-import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dart';
-import 'package:securedtrade/features/strategy/presentation/bloc/strategy_state.dart';
 
 class CreateBotScreen extends StatefulWidget {
   final String symbol;
@@ -83,220 +80,33 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
                                 mData: tradeSetting,
                                 mode: widget.tradingMode,
                               ),
-                              SizedBox(height: 10),
+                              AppSpacing.h8,
 
-                              //  ManageStrategy(),
-                              SizedBox(height: 6),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 5.0,
-                                  right: 5,
-                                ),
-                                child: AppCustomCard(
-                                  radius: 8,
-                                  topPadding: 5,
-                                  bottomPadding: 10,
-                                  height: 70,
-                                  child: Container(
-                                    color: Colors.transparent,
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          "Initial Buy In Percent",
-                                          style: getDmSansTextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: AppColors.black,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        Spacer(),
-                                        ContainerBg(
-                                          bWidth: 1,
-                                          backgroundColor: AppColors.grey5
-                                              .withOpacity(.7),
-                                          borderColor: AppColors.grey6
-                                              .withOpacity(.3),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 8.0,
-                                              bottom: 8,
-                                              left: 15,
-                                              right: 15,
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  tradeSetting == null
-                                                      ? "0.0"
-                                                      : tradeSetting
-                                                            .data
-                                                            .spotConfig
-                                                            .initialBuyPercent
-                                                            .toString(),
-                                                  style: getDmSansTextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 14,
-                                                    color: AppColors.black,
-                                                  ),
-                                                ),
-
-                                                Text(
-                                                  " %",
-                                                  style: getDmSansTextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 12,
-                                                    color: AppColors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        AppSpacing.w8,
-                                      ],
+                              widget.tradingMode == TradingMode.future
+                                  ? FutureBotConfig(
+                                      tradeSettingModel: tradeSetting,
+                                    )
+                                  : SpotBotStrategyDetail(
+                                      tradeSettingModel: tradeSetting,
                                     ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 5.0,
-                                  right: 5,
-                                ),
-                                child: AppCustomCard(
-                                  bottomPadding: 15,
-                                  radius: 8,
-
-                                  height: 72,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        "Use EMA Filter",
-                                        style: getDmSansTextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: AppColors.black,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      Spacer(),
-                                      Switch(
-                                        value: tradeSetting == null
-                                            ? false
-                                            : tradeSetting
-                                                  .data
-                                                  .spotConfig
-                                                  .useEmaFilter,
-                                        activeThumbColor: AppColors.white,
-                                        inactiveTrackColor: tradeSetting == null
-                                            ? AppColors.white
-                                            : !tradeSetting
-                                                  .data
-                                                  .spotConfig
-                                                  .useEmaFilter
-                                            ? AppColors.white
-                                            : AppColors.primary,
-                                        activeColor: tradeSetting == null
-                                            ? AppColors.white
-                                            : !tradeSetting
-                                                  .data
-                                                  .spotConfig
-                                                  .useEmaFilter
-                                            ? AppColors.white
-                                            : AppColors.secondary,
-                                        activeTrackColor: tradeSetting == null
-                                            ? AppColors.white
-                                            : !tradeSetting
-                                                  .data
-                                                  .spotConfig
-                                                  .useEmaFilter
-                                            ? AppColors.white
-                                            : AppColors.primary,
-                                        inactiveThumbColor: AppColors.primary,
-
-                                        onChanged: (onChanged) {},
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-
-                              /* SizedBox(height: 5),
-                              AppCustomCard(
-                                radius: 8,
-                                topPadding: 0,
-                                bottomPadding: 10,
-                                height: 72,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "AI Margin Call",
-                                      style: getDmSansTextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.black,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Spacer(),
-                                    Switch(
-                                      value: tradeSetting == null
-                                          ? false
-                                          : tradeSetting.aiMarginCall,
-                                      activeThumbColor: AppColors.white,
-                                      inactiveTrackColor: tradeSetting == null
-                                          ? AppColors.white
-                                          : AppColors.primary,
-                                      activeColor: tradeSetting == null
-                                          ? AppColors.white
-                                          : AppColors.secondary,
-                                      activeTrackColor: tradeSetting == null
-                                          ? AppColors.white
-                                          : AppColors.primary,
-                                      inactiveThumbColor: AppColors.primary,
-
-                                      onChanged: (onChanged) {},
-                                    ),
-                                  ],
-                                ),
-                              ),*/
-                              SizedBox(height: 5),
-                              BotStrategyDetail(mData: tradeSetting),
                             ],
                           ),
                         ),
                       ),
 
-                      SizedBox(height: 15),
-                      Row(
-                        children: [
-                          TradeButton(
-                            onTap: () {
-                              context.push(
-                                AppRoutePaths.tradeSetting,
-                                extra: ManualCreateArgs(
-                                  tradeSettingModel: tradeSetting,
-                                  symbol: widget.symbol,
-                                ),
-                              );
-                            },
-                            title: "Trade Setting",
-                            radius: 4,
-                            backgroundColor: Color(0xffF5F7FC),
-                            txColor: AppColors.black,
-                          ),
-                          TradeButton(
-                            radius: 5,
-                            onTap: () {
-                              context.read<StrategyBloc>().add(
-                                SetBotActivation(pair: widget.symbol),
-                              );
-                            },
-                            title: "Activate",
-                            backgroundColor: AppColors.primary,
-                            txColor: AppColors.white,
-                          ),
-                        ],
-                      ),
+                      AppSpacing.h16,
+
+                      widget.tradingMode == TradingMode.future
+                          ? AppButton(
+                              padding: 8,
+                              raidus: 4,
+                              text: "Activate",
+                              backgroundColor: AppColors.primary,
+                              textColor: AppColors.white,
+                              onPressed: () {},
+                            )
+                          : tradeSettingBotActivationBotton(tradeSetting),
+
                       SizedBox(height: 4),
                     ],
                   ),
@@ -306,6 +116,44 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  tradeSettingBotActivationBotton(SpotTradeSettingModel? tradeSetting) {
+    return Row(
+      children: [
+        TradeButton(
+          onTap: () {
+            // if (widget.tradingMode ==
+            //     TradingMode.future) {
+            //   context.push(AppRoutePaths.futureBotConfig);
+            // } else {
+            context.push(
+              AppRoutePaths.tradeSetting,
+              extra: ManualCreateArgs(
+                tradeSettingModel: tradeSetting,
+                symbol: widget.symbol,
+              ),
+            );
+            // }
+          },
+          title: "Trade Setting",
+          radius: 4,
+          backgroundColor: Color(0xffF5F7FC),
+          txColor: AppColors.black,
+        ),
+        TradeButton(
+          radius: 5,
+          onTap: () {
+            context.read<StrategyBloc>().add(
+              SetBotActivation(pair: widget.symbol),
+            );
+          },
+          title: "Activate",
+          backgroundColor: AppColors.primary,
+          txColor: AppColors.white,
+        ),
+      ],
     );
   }
 }

@@ -10,4 +10,7 @@ abstract class HomeRepository {
   Future<ApiResponse> sendOtp();
 
   Future<ApiResponse> saveApiKeys(Map<String, dynamic> encrypt, String keyOtp);
+  Future<ApiResponse> getNotification();
+  Future<ApiResponse> checkTokenStatus();
+
 }

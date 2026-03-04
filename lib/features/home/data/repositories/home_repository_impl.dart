@@ -26,8 +26,23 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<ApiResponse> saveApiKeys(Map<String, dynamic> encrypt,String secretKey) {
+  Future<ApiResponse> saveApiKeys(
+    Map<String, dynamic> encrypt,
+    String secretKey,
+  ) {
     // TODO: implement saveApiKeys
-    return remote.saveApisCredential(encrypt,secretKey);
+    return remote.saveApisCredential(encrypt, secretKey);
+  }
+
+  @override
+  Future<ApiResponse> getNotification() {
+    // TODO: implement getNotification
+    return remote.getNotification();
+  }
+
+  @override
+  Future<ApiResponse> checkTokenStatus() {
+    // TODO: implement checkTokenStatus
+    return remote.checkTokenStatus();
   }
 }

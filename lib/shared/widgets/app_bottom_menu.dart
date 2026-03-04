@@ -36,10 +36,11 @@ class AppBottomMenu extends StatelessWidget {
           selectedIcon: AppStrings.filledWallet,
         ),
 
-        // BottomNavBarItem(
-        //   title: 'FAQ',
-        //   icon: FontAwesomeIcons.questionCircle,
-        // ),
+        BottomNavBarItem(
+          title: 'Arbitrage',
+          icon: AppStrings.profitDetail,
+          selectedIcon: '',
+        ),
         BottomNavBarItem(
           title: "Mine",
           icon: AppStrings.filledMine,

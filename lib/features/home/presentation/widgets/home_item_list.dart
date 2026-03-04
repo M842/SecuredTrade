@@ -20,7 +20,7 @@ class _HomeItemListState extends State<HomeItemList> {
     HomeTradeOptionModel(title: "Wallet", icon: AppStrings.walletIcon2),
     HomeTradeOptionModel(title: "Invite", icon: AppStrings.inviteFriend),
     HomeTradeOptionModel(title: "Guide", icon: AppStrings.userGuide),
-    HomeTradeOptionModel(title: "Mentor", icon: AppStrings.mentor),
+    HomeTradeOptionModel(title: "Telegram", icon: AppStrings.telegramIcon),
     HomeTradeOptionModel(title: "More", icon: AppStrings.more),
   ];
   @override
@@ -119,7 +119,6 @@ class _HomeItemListState extends State<HomeItemList> {
         context.push(AppRoutePaths.rewardDetail);
         break;
       case 3:
-
         context.push(AppRoutePaths.wallet, extra: false);
         break;
       case 4:
@@ -127,7 +126,10 @@ class _HomeItemListState extends State<HomeItemList> {
         break;
       case 5:
         //Get.toNamed(AppRoutes.userGuide);
-      context.push(AppRoutePaths.userGuide);
+        context.push(AppRoutePaths.userGuide);
+        break;
+      case 6:
+        context.push(AppRoutePaths.telegram);
         break;
     }
   }

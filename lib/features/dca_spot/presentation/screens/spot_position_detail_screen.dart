@@ -1,7 +1,7 @@
 import 'package:securedtrade/config/path_config.dart';
 
-class RbgSpotTradeDetailScreen extends StatelessWidget {
-  const RbgSpotTradeDetailScreen({super.key});
+class ArbitrageSpotTradeDetailScreen extends StatelessWidget {
+  const ArbitrageSpotTradeDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

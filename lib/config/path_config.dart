@@ -12,6 +12,12 @@ export 'package:securedtrade/features/home/domain/usecases/get_home_data_usecase
 export 'package:securedtrade/features/home/presentation/bloc/home_bloc.dart';
 export 'package:securedtrade/routes/app_routes.dart';
 
+
+export 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
+export 'package:securedtrade/features/strategy/presentation/bloc/strategy_state.dart';
+export 'package:securedtrade/features/strategy/presentation/widgets/futrue_bot_config.dart';
+
+
 export 'package:securedtrade/features/auth/domain/usecases/logout_usecase.dart';
 export 'package:securedtrade/features/auth/domain/usecases/register_usecase.dart';
 export 'package:securedtrade/features/home/domain/usecases/save_api_detail_usecase.dart';

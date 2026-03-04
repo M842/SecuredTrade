@@ -16,6 +16,8 @@ abstract class HomeRemoteDataSource {
     Map<String, dynamic> encrypt,
     String keyOtp,
   );
+  Future<ApiResponse> getNotification();
+  Future<ApiResponse> checkTokenStatus();
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
@@ -101,12 +103,37 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
         "keyotp": keyOTP,
       },
     );
-    print("SOURCE$res");
+
     Map data = json.decode(res.toString());
     if (!data.containsKey(AppConstants.apiError)) {
       return ApiResponse(status: true, message: data[AppConstants.apiMessage]);
     } else {
       return ApiResponse(status: false, message: data[AppConstants.apiError]);
+    }
+  }
+
+  @override
+  Future<ApiResponse> getNotification() async {
+    // TODO: implement getNotification
+    final res = await ApiClient().post(ApiEndpoints.getNotification);
+    Map data = json.decode(res.toString());
+    if (!data.containsKey(AppConstants.apiError)) {
+      return ApiResponse(status: true);
+    } else {
+      return ApiResponse(status: false);
+    }
+  }
+
+  @override
+  Future<ApiResponse> checkTokenStatus() async {
+    // TODO: implement checkTokenStatus
+    final resp = await ApiClient().post(ApiEndpoints.checkTokenStatus);
+    print(resp);
+    Map data = json.decode(resp.toString());
+    if (!data.containsKey(AppConstants.apiError)) {
+      return ApiResponse(status: true);
+    } else {
+      return ApiResponse(status: false);
     }
   }
 }

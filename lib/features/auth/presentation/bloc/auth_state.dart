@@ -1,4 +1,3 @@
-
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
@@ -9,15 +8,28 @@ class Authenticated extends AuthState {}
 
 class Unauthenticated extends AuthState {}
 
+class InvestSuccessState extends AuthState {
+  final String message;
+  InvestSuccessState(this.message);
+}
+
+class InvestFailedState extends AuthState {
+  final String message;
+  InvestFailedState(this.message);
+}
+
 class AuthFailure extends AuthState {
   final String message;
   AuthFailure(this.message);
-}class AuthFailure2 extends AuthState {
+}
+
+class AuthFailure2 extends AuthState {
   final String message;
   AuthFailure2(this.message);
 }
 
 class RegisterSuccess extends AuthState {}
+
 class UserSubscribed extends AuthState {
   final bool isSubscribed;
   UserSubscribed({required this.isSubscribed});
