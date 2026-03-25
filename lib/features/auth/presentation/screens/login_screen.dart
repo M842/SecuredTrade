@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/core/services/auth_service.dart';
 import 'package:securedtrade/shared/widgets/top_snackbar.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -195,10 +196,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(height: 0, width: 30),
-                      Image.asset(
-                        AppStrings.google_icon,
-                        height: 68,
-                        width: 68,
+                      GestureDetector(
+                        onTap: () async {
+                          final user = await AuthService().signInWithGoogle();
+                          if (user != null) {
+                            print("User: ${user.email}");
+                          }
+                        },
+                        child: Image.asset(
+                          AppStrings.google_icon,
+                          height: 68,
+                          width: 68,
+                        ),
                       ),
                       Image.asset(
                         AppStrings.facebook_icon,
@@ -254,10 +263,10 @@ class _LoginScreenState extends State<LoginScreen> {
       SnackbarHelper.show(context, message: "Please enter email address");
       return false;
     }
-    if (!Validators.isValidEmail(editEmailController.text.trim())) {
-      SnackbarHelper.show(context, message: "Invalid email address");
-      return false;
-    }
+    // if (!Validators.isValidEmail(editEmailController.text.trim())) {
+    //   SnackbarHelper.show(context, message: "Invalid email address");
+    //   return false;
+    // }
 
     if (editPasswordController.text.trim().isEmpty) {
       SnackbarHelper.show(context, message: "Please enter password");

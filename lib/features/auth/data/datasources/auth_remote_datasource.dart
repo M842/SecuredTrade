@@ -1,14 +1,18 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:securedtrade/features/auth/data/models/user_model.dart';
 import 'package:securedtrade/config/path_config.dart';
 
 abstract class AuthRemoteDataSource {
   Future<UserModel> login(String email, String password);
+
   Future<ApiResponse> register(String userName, String email, String password);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+
   @override
   Future<UserModel> login(String email, String password) async {
     Map<dynamic, dynamic> params = {
@@ -16,7 +20,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       "useremail": email,
       "password": password,
     };
-    final res = await ApiClient().post(ApiEndpoints.login, data: params);
+    final res = await ApiClient().post(ApiEndpoints.login, params: params);
     print(res);
     Map data = json.decode(res.toString());
 
@@ -40,7 +44,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       "password": password,
     };
     try {
-      final res = await ApiClient().post(ApiEndpoints.signUp, data: params);
+      final res = await ApiClient().post(ApiEndpoints.signUp, params: params);
       print("REMOTE_RES$res");
       Map data = json.decode(res.toString());
 
@@ -57,4 +61,5 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return ApiResponse(status: false, message: err.toString());
     }
   }
+
 }

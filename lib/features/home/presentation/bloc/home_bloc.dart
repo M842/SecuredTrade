@@ -1,10 +1,7 @@
 import 'dart:async';
+import 'package:reown_appkit/reown_appkit.dart';
 import 'package:securedtrade/config/path_config.dart';
-import 'package:securedtrade/core/network/api_response.dart';
-import 'package:securedtrade/core/services/wallet_connection_service.dart';
-import 'package:securedtrade/core/utils/dialog_utils.dart';
-import 'package:securedtrade/features/home/domain/usecases/check_token_status_usecase.dart';
-import 'package:securedtrade/features/home/domain/usecases/get_notification_usecase.dart';
+import 'package:securedtrade/features/home/domain/entities/payout_model.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetHomeDataUseCase homeDataUseCase;
@@ -19,6 +16,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   List<CurrenciesModel> btcCurrenciesList = [];
 
   Timer? timer;
+
+  //late BigInt bigIntUserId;
 
   HomeBloc(
     this.homeDataUseCase,
@@ -37,6 +36,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<GetNotificationEvent>(getNotification);
     on<StartAutoCheckEvent>(onStartAutoCheck);
     on<CheckTokenStatusEvent>(onCheckTokenStatus);
+
+    on<LoadPayout>(loadPayoutEvent);
   }
 
   Future<void> _onLoadHome(LoadHomeEvent event, Emitter<HomeState> emit) async {
@@ -173,5 +174,50 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         message: "Your session has expired. Please login again.",
       );
     }
+  }
+
+  FutureOr<void> loadPayoutEvent(
+    LoadPayout event,
+    Emitter<HomeState> emit,
+  ) async {
+    List<PayoutModel> temp = [];
+    final web3 = Web3Service(Web3Constants.rpcUrl);
+    final result = await web3.getContract(
+      functionName: Web3Constants.getTotalBuysContractFunction,
+      params: [event.userId],
+    );
+
+    for (int i = 0; i < result.length; i++) {
+      final buyId = await getBuyId(web3, BigInt.from(i), event.userId);
+      final payout = await getPayout(web3, buyId);
+      temp.add(payout);
+    }
+
+    emit(PayoutSuccessLoad(temp.reversed.toList()));
+    // await getPayout(web3, result2.first);
+    //print(result2);
+  }
+
+  Future<PayoutModel> getPayout(Web3Service web3, BigInt buyId) async {
+    final result = await web3.getContract(
+      functionName: Web3Constants.getPayoutContractFunction,
+      params: [buyId],
+    );
+
+    print(result);
+    return PayoutModel.fromList(result);
+  }
+
+  Future<BigInt> getBuyId(
+    Web3Service web3,
+    BigInt bigIntIndex,
+    BigInt userId,
+  ) async {
+    final result2 = await web3.getContract(
+      functionName: Web3Constants.getBuysIdContractFunction,
+      params: [userId, bigIntIndex],
+    );
+
+    return result2.first;
   }
 }

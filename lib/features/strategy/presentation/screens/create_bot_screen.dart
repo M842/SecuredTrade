@@ -1,5 +1,7 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/features/dca_spot/presentation/bloc/spot_bloc.dart';
+import 'package:securedtrade/features/dca_spot/presentation/bloc/spot_event.dart';
 
 class CreateBotScreen extends StatefulWidget {
   final String symbol;
@@ -15,11 +17,13 @@ class CreateBotScreen extends StatefulWidget {
 }
 
 class _CreateBotScreenState extends State<CreateBotScreen> {
+  bool isBotActivated = false;
+
   @override
   void initState() {
     // TODO: implement initState
-    print(widget.tradingMode.name);
     context.read<StrategyBloc>().add(GetTradeSettingData(pair: widget.symbol));
+
     super.initState();
   }
 
@@ -47,18 +51,18 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
                 );
               } else if (state is StrategyFailure) {
                 SnackbarHelper.show(context, message: state.message);
-              } else if (state is BotActivatedState) {
+              } else if (state is StrategyLoaded) {
                 SnackbarHelper.show(
                   context,
                   message: state.messages,
                   backgroundColor: AppColors.green,
                 );
-              } else if (state is ActivationFailure) {
+              } /*else if (state is ActivationFailure) {
                 SnackbarHelper.show(
                   context,
                   message: state.messages.toString(),
                 );
-              }
+              }*/
             },
             child: BlocBuilder<StrategyBloc, StrategyState>(
               builder: (c, mState) {
@@ -100,8 +104,10 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
                           ? AppButton(
                               padding: 8,
                               raidus: 4,
-                              text: "Activate",
-                              backgroundColor: AppColors.primary,
+                              text: isBotActivated ? "Stop" : "Activate",
+                              backgroundColor: isBotActivated
+                                  ? AppColors.red
+                                  : AppColors.primary,
                               textColor: AppColors.white,
                               onPressed: () {},
                             )
@@ -145,12 +151,17 @@ class _CreateBotScreenState extends State<CreateBotScreen> {
         TradeButton(
           radius: 5,
           onTap: () {
-            context.read<StrategyBloc>().add(
-              SetBotActivation(pair: widget.symbol),
-            );
+            if (isBotActivated) {
+              context.read<StrategyBloc>().add(StopBot(widget.symbol));
+            } else {
+              context.read<StrategyBloc>().add(
+                SetBotActivation(pair: widget.symbol),
+              );
+            }
           },
-          title: "Activate",
-          backgroundColor: AppColors.primary,
+          title: isBotActivated ? "Stop" : "Activate",
+          backgroundColor: isBotActivated ? AppColors.red : AppColors.primary,
+
           txColor: AppColors.white,
         ),
       ],

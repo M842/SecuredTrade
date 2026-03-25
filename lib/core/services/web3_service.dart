@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:reown_appkit/reown_appkit.dart';
+import 'package:securedtrade/core/constants/web3_constants.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as httpClient;
@@ -27,8 +28,8 @@ class Web3Service {
   }
 
   Future<List<dynamic>> getContract({
-    required String abi,
-    required String contractAddress,
+     String abi=Web3Constants.secureTradeAbiJson,
+     String contractAddress=Web3Constants.contractAddress,
     required String functionName,
     required List<dynamic> params,
   }) async {

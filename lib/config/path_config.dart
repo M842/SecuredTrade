@@ -12,6 +12,12 @@ export 'package:securedtrade/features/home/domain/usecases/get_home_data_usecase
 export 'package:securedtrade/features/home/presentation/bloc/home_bloc.dart';
 export 'package:securedtrade/routes/app_routes.dart';
 
+export 'package:securedtrade/core/constants/web3_constants.dart';
+export 'package:securedtrade/core/services/wallet_connection_service.dart';
+export 'package:securedtrade/core/services/web3_service.dart';
+export 'package:securedtrade/core/utils/dialog_utils.dart';
+export 'package:securedtrade/features/home/domain/usecases/check_token_status_usecase.dart';
+export 'package:securedtrade/features/home/domain/usecases/get_notification_usecase.dart';
 
 export 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
 export 'package:securedtrade/features/strategy/presentation/bloc/strategy_state.dart';

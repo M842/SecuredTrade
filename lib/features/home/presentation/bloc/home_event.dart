@@ -28,4 +28,9 @@ class ApiManageRequest extends HomeEvent {
 
 class CheckTokenStatusEvent extends HomeEvent {}
 
+class LoadPayout extends HomeEvent {
+  final BigInt userId;
+  LoadPayout(this.userId);
+}
+
 class StartAutoCheckEvent extends HomeEvent {}

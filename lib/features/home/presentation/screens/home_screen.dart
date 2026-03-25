@@ -1,6 +1,7 @@
 import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/core/services/currency_websocket_service.dart';
 import 'package:securedtrade/core/utils/dialog_utils.dart';
+import 'package:securedtrade/features/home/presentation/screens/currency_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,13 +15,24 @@ class _HomeScreenState extends State<HomeScreen> {
   //CurrencyWebsocketService wc=CurrencyWebsocketService();
   @override
   void initState() {
-    //  wc.call("wss://stream.binance.com:9443/stream?streams=!miniTicker@arr");
+    wc.executeTradingBot(
+      "wss://gateway.stbots.io/ws/?userid=manojbisht842",
+      "",
+    );
     // TODO: implement initState
     context.read<HomeBloc>().add(StartAutoCheckEvent());
     context.read<HomeBloc>().add(LoadHomeEvent(context));
     context.read<HomeBloc>().add(
       GetSpotCurrencies(url: AppConstants.getSpotCurrencyUrl),
     );
+
+    if (context.read<AuthBloc>().isMetamaskConnected &&
+        !context.read<AuthBloc>().isSubscribed) {
+      /* context.read<AuthBloc>().add(
+        GetUserIdFromAddressEvent(context.read<AuthBloc>().address),
+      );*/
+      context.read<AuthBloc>().add(UserHeldNFTsDetailEvent());
+    }
 
     super.initState();
   }

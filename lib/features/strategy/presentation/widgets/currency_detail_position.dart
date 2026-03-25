@@ -181,5 +181,6 @@ String formatSymbol2(String symbol) {
   final data =
       '${symbol.substring(0, symbol.length - 4)}/${symbol.substring(symbol.length - 4)}';
   final data2 = data.split("/");
+
   return data2[0];
 }

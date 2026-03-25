@@ -60,6 +60,7 @@ class AppButton extends StatelessWidget {
           ),
           child: Center(
             child: Text(
+              textAlign: TextAlign.center,
               text,
               style: getDmSansTextStyle(
                 color: textColor,

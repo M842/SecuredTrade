@@ -8,7 +8,7 @@ abstract class StrategyRemoteDataSource {
   Future<ApiResponse> getTradeSetting(String pair);
   Future<ApiResponse> activateBot(String pair);
   Future<ApiResponse> saveSmartSetting(Map<dynamic, dynamic> params);
-  Future<ApiResponse> stopBot();
+  Future<ApiResponse> stopBot(String pair);
 }
 
 class StrategyRemoteDataSourceImpl implements StrategyRemoteDataSource {
@@ -17,7 +17,7 @@ class StrategyRemoteDataSourceImpl implements StrategyRemoteDataSource {
     // TODO: implement getTradeSetting
     final resp = await ApiClient().post(
       ApiEndpoints.getTradeSetting,
-      data: {"pair": pair},
+      params: {"pair": pair},
     );
 
     print(resp);
@@ -52,7 +52,7 @@ class StrategyRemoteDataSourceImpl implements StrategyRemoteDataSource {
     // TODO: implement saveSmartSetting
     final resp = await ApiClient().post(
       ApiEndpoints.saveTradeSetting,
-      data: params,
+      params: params,
     );
     Map data = json.decode(resp.toString());
 
@@ -72,7 +72,7 @@ class StrategyRemoteDataSourceImpl implements StrategyRemoteDataSource {
     // TODO: implement activateBot
     final resp = await ApiClient().post(
       ApiEndpoints.createBot,
-      data: {"pair": pair},
+      params: {"pair": pair},
     );
     Map data = json.decode(resp.toString());
     print(data);
@@ -88,11 +88,14 @@ class StrategyRemoteDataSourceImpl implements StrategyRemoteDataSource {
   }
 
   @override
-  Future<ApiResponse> stopBot() async {
+  Future<ApiResponse> stopBot(String pair) async {
     // TODO: implement stopBot
-    final resp = await ApiClient().post(ApiEndpoints.stopBot);
+    final resp = await ApiClient().post(
+      ApiEndpoints.stopBot,
+      params: {"pair": pair},
+    );
     Map data = json.decode(resp.toString());
-
+    print(resp);
     if (!data.containsKey(AppConstants.apiError)) {
       return ApiResponse(status: true, message: data[AppConstants.apiMessage]);
     } else {

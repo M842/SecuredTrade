@@ -1,4 +1,5 @@
 import "package:securedtrade/config/path_config.dart";
+import "package:securedtrade/features/home/domain/entities/payout_model.dart";
 
 abstract class HomeState {}
 
@@ -28,6 +29,13 @@ class SpotCurrenciesLoaded extends HomeState {
 class GetApiKeysLoaded extends HomeState {
   final String apiKey, secretKey;
   GetApiKeysLoaded({required this.apiKey, required this.secretKey});
+}
+
+
+
+class PayoutSuccessLoad extends HomeState{
+  final List<PayoutModel>payoutList;
+  PayoutSuccessLoad(this.payoutList);
 }
 
 class ApiKeysNotExist extends HomeState {

@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:securedtrade/features/auth/data/models/burn_nfts_list_model.dart';
 
 abstract class AuthEvent {}
 
-class AppStarted extends AuthEvent {
-
-}
+class AppStarted extends AuthEvent {}
 
 class LoginRequest extends AuthEvent {
   final String email;
@@ -15,15 +14,25 @@ class LoginRequest extends AuthEvent {
 
 class MetamaskRequest extends AuthEvent {}
 
-class SubscribeInvestEvent extends AuthEvent {}
-
+class BurnNFTsEvent extends AuthEvent {
+  String payload, tokenId, burnAmt;
+  BurnNFTsEvent(this.payload, this.tokenId, this.burnAmt);
+}
 
 class RegisterRequest extends AuthEvent {
-  final String email,password,userName;
+  final String email, password, userName;
 
-
-  RegisterRequest({required this.email, required this.password,
-    required this.userName});
+  RegisterRequest({
+    required this.email,
+    required this.password,
+    required this.userName,
+  });
 }
+// class GetUserIdFromAddressEvent extends AuthEvent {
+//   final String address;
+//   GetUserIdFromAddressEvent(this.address);
+// }
+
+class UserHeldNFTsDetailEvent extends AuthEvent {}
 
 class Logout extends AuthEvent {}

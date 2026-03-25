@@ -6,6 +6,9 @@ class ApiEndpoints {
   static String dashboard = "/dashboard";
 
   static String getApiKey = "/getapikeys";
+  static String getRunningBots = "/getRunningBots";
+  static String startBot = "/startBot";
+  static String stopBot = "/stopBot";
 
   static String sendOtp = "/sendOtp";
 
@@ -13,7 +16,6 @@ class ApiEndpoints {
   static String saveTradeSetting = "/SaveSettings";
   static String createBot = "/ActivateBot";
 
-  static String stopBot = "/StopBot";
   static String getNotification = "/getNotification";
   static String checkTokenStatus = "/CheckTokenStatus";
 }

@@ -1,9 +1,12 @@
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/features/dca_spot/data/models/running_bot_model.dart';
+import 'package:securedtrade/features/dca_spot/presentation/bloc/spot_bloc.dart';
+import 'package:securedtrade/features/dca_spot/presentation/bloc/spot_event.dart';
 import 'package:securedtrade/features/futures/presentation/widgets/active_trade_button.dart';
 
 class ActiveDCAPositionList extends StatelessWidget {
-  final int index;
-  const ActiveDCAPositionList({super.key, required this.index});
+  final RunningBotList data;
+  const ActiveDCAPositionList({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +19,8 @@ class ActiveDCAPositionList extends StatelessWidget {
         child: ContainerBg(
           width: double.infinity,
           radius: 16,
-          height: index == 0 ? 565 : 365,
+          //height: index == 0 ? 565 : 365,
+          height: 566,
           borderColor: AppColors.grey5,
           bWidth: 1,
           backgroundColor: AppColors.white,
@@ -34,7 +38,7 @@ class ActiveDCAPositionList extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              index == 0 ? "BTC/USDT" : "ETH/USDT",
+                              data.symbol,
                               style: getDmSansTextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 18,
@@ -227,55 +231,53 @@ class ActiveDCAPositionList extends StatelessWidget {
                   ],
                 ),
 
-                index == 1
-                    ? SizedBox()
-                    : Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 10),
-                        child: ContainerBg(
-                          height: 175,
-                          radius: 10,
-                          width: double.infinity,
-                          backgroundColor: Color(0xffF9FAFB),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 12),
-                                Text(
-                                  "DCA Level Details",
-                                  style: getDmSansTextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 11,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                dcaLevelsUI(
-                                  title: "Level 1: \$45,000",
-                                  status: "✓ Filled",
-                                ),
-                                dcaLevelsUI(
-                                  title: "Level 2: \$43,332",
-                                  status: "✓ Filled",
-                                ),
-                                dcaLevelsUI(
-                                  title: "Level 3: \$41,000",
-                                  status: "✓ Filled",
-                                ),
-                                dcaLevelsUI(
-                                  title: "Level 4: \$34,464",
-                                  status: "Pending",
-                                ),
-                                dcaLevelsUI(
-                                  title: "Level 5: \$4,636",
-                                  status: "Pending",
-                                ),
-                              ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0, bottom: 10),
+                  child: ContainerBg(
+                    height: 175,
+                    radius: 10,
+                    width: double.infinity,
+                    backgroundColor: Color(0xffF9FAFB),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 12),
+                          Text(
+                            "DCA Level Details",
+                            style: getDmSansTextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 11,
+                              color: AppColors.black,
                             ),
                           ),
-                        ),
+                          SizedBox(height: 10),
+                          dcaLevelsUI(
+                            title: "Level 1: \$45,000",
+                            status: "✓ Filled",
+                          ),
+                          dcaLevelsUI(
+                            title: "Level 2: \$43,332",
+                            status: "✓ Filled",
+                          ),
+                          dcaLevelsUI(
+                            title: "Level 3: \$41,000",
+                            status: "✓ Filled",
+                          ),
+                          dcaLevelsUI(
+                            title: "Level 4: \$34,464",
+                            status: "Pending",
+                          ),
+                          dcaLevelsUI(
+                            title: "Level 5: \$4,636",
+                            status: "Pending",
+                          ),
+                        ],
                       ),
+                    ),
+                  ),
+                ),
 
                 Row(
                   children: [
@@ -359,16 +361,30 @@ class ActiveDCAPositionList extends StatelessWidget {
                   ],
                 ),
 
-                SizedBox(height: 15),
+                AppSpacing.h20,
                 Row(
                   children: [
                     ActiveTradeButton(
-                      bgColor: AppColors.primary.withOpacity(.1),
-                      text: "View Chart",
+                      bgColor: data.isActive
+                          ? AppColors.red.withOpacity(.80)
+                          : AppColors.primary,
+                      text: data.isActive ? "Stop" : "Start",
+                      onPressed: () {
+                        if (data.isActive) {
+                          context.read<SpotBloc>().add(
+                            StopBotEvent(data.symbol),
+                          );
+                        } else {
+                          context.read<SpotBloc>().add(
+                            StartBotEvent(data.symbol),
+                          );
+                        }
+                      },
                       borderColor: Colors.transparent,
                     ),
                     SizedBox(width: 10),
                     ActiveTradeButton(
+                      onPressed: () {},
                       bgColor: AppColors.white,
                       text: "Setting",
                       borderColor: Color(0xffD1D5DC),

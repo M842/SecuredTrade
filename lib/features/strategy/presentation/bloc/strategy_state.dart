@@ -17,15 +17,8 @@ class TradeSettingSaved extends StrategyState {
   TradeSettingSaved(this.messages);
 }
 
-class BotActivatedState extends StrategyState {
-  final String messages;
-  BotActivatedState(this.messages);
-}
 
-class ActivationFailure extends StrategyState {
-  final String messages;
-  ActivationFailure(this.messages);
-}
+
 
 class GetTradeSettingEmpty extends StrategyState {
   final String messages;

@@ -14,6 +14,8 @@ class AppConstants {
 
   static const String getIsUserAffiliateUrl =
       "https://api.nftwall.io:2096/api/call-proc?procedureName=get_rpt_users_data&forprime=0&node=";
+  static const String getUserHoldNFTDetailUrl =
+      "https://api.nftwall.io:2096/api/call-proc?procedureName=get_NFT_balance&node=";
 
   static String spotCurrencyWebSocketUrl =
       "wss://stream.binance.com:9443/stream?streams=!miniTicker@arr";

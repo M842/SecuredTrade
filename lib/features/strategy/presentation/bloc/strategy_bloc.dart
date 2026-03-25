@@ -2,21 +2,20 @@ import 'dart:async';
 
 import 'package:securedtrade/config/path_config.dart';
 import 'package:securedtrade/features/strategy/data/models/spot_trade_setting_model.dart';
-import 'package:securedtrade/features/strategy/domain/entities/trade_setting.dart';
 import 'package:securedtrade/features/strategy/domain/usecases/activate_bot_usecase.dart';
 import 'package:securedtrade/features/strategy/domain/usecases/stop_bot_usecase.dart';
-import 'package:securedtrade/features/strategy/presentation/bloc/strategy_state.dart';
 
 class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
   final GetTradeSettingUseCase tradeSettingUseCase;
   final SaveTradeSettingUseCase saveTradeSettingUseCase;
   final ActivateBotUseCase activateBotUseCase;
   final StopBotUseCase stopBotUseCase;
+
   StrategyBloc(
     this.tradeSettingUseCase,
     this.saveTradeSettingUseCase,
     this.activateBotUseCase,
-      this.stopBotUseCase
+    this.stopBotUseCase,
   ) : super((StrategyInitial())) {
     on<GetTradeSettingData>(getTradeSettingData);
     on<SaveTradeSettingData>(saveTradeSetting);
@@ -46,9 +45,9 @@ class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
     ApiResponse apiResponse = await activateBotUseCase.execute(event.pair);
     if (apiResponse.status) {
       add(GetTradeSettingData(pair: event.pair));
-      emit(BotActivatedState(apiResponse.message.toString()));
+      emit(StrategyLoaded(apiResponse.message.toString()));
     } else {
-      emit(ActivationFailure(apiResponse.message.toString()));
+      emit(StrategyFailure(apiResponse.message.toString()));
     }
   }
 
@@ -64,8 +63,6 @@ class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
 
       emit(TradeSettingLoaded(spConfig));
     } else {
-      print(apiResponse.data);
-
       if (apiResponse.data != null) {
         Map<String, dynamic> data = apiResponse.data;
         emit(StrategyFailure(apiResponse.message.toString()));
@@ -76,7 +73,12 @@ class StrategyBloc extends Bloc<StrategyEvent, StrategyState> {
     }
   }
 
-  FutureOr<void> stopBot(StopBot event, Emitter<StrategyState> emit) async{
-    final apiResponse=await stopBotUseCase.execute();
+  FutureOr<void> stopBot(StopBot event, Emitter<StrategyState> emit) async {
+    final apiResponse = await stopBotUseCase.execute(event.pair);
+    if (apiResponse.status) {
+      emit(StrategyLoaded(apiResponse.message.toString()));
+    } else {
+      emit(StrategyFailure(apiResponse.message.toString()));
+    }
   }
 }

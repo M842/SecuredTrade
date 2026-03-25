@@ -277,12 +277,14 @@ class FuturePositionScreen extends StatelessWidget {
                     Row(
                       children: [
                         ActiveTradeButton(
+                          onPressed: (){},
                           bgColor: Color(0xff3C4CF9).withOpacity(.1),
                           text: "View Chart",
                           borderColor: Colors.transparent,
                         ),
                         AppSpacing.w8,
                         ActiveTradeButton(
+                          onPressed: (){},
                           bgColor: Color(0xffFEF2F2).withOpacity(.1),
                           text: "Close Position",
                           borderColor: Color(0xffFFA2A2),

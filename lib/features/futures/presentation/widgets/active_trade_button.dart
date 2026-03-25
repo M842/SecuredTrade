@@ -3,8 +3,10 @@ import 'package:securedtrade/config/path_config.dart';
 class ActiveTradeButton extends StatelessWidget {
   final Color bgColor, borderColor;
   final String text;
+  final Function() onPressed;
   const ActiveTradeButton({
     super.key,
+    required this.onPressed,
     required this.bgColor,
     required this.text,
     required this.borderColor,
@@ -14,10 +16,7 @@ class ActiveTradeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: GestureDetector(
-        onTap: () {
-          //AppUtils.navPush2(
-          //     context, SpotDcaStrategyScreen());
-        },
+        onTap: onPressed,
         child: ContainerBg(
           width: double.infinity,
           height: 40,
@@ -44,9 +43,7 @@ class ActiveTradeButton extends StatelessWidget {
                 style: getDmSansTextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: text == "Setting"
-                      ? AppColors.black
-                      : AppColors.primary,
+                  color: text == "Setting" ? AppColors.black : AppColors.white,
                 ),
               ),
             ],

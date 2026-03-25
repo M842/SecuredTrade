@@ -10,7 +10,10 @@ class SetBotActivation extends StrategyEvent {
   SetBotActivation({required this.pair});
 }
 
-class StopBot extends StrategyEvent{}
+class StopBot extends StrategyEvent{
+  final String pair;
+  StopBot(this.pair);
+}
 
 class SaveTradeSettingData extends StrategyEvent {
   final Map<dynamic, dynamic> params;

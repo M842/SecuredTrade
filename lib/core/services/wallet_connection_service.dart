@@ -12,7 +12,7 @@ class WalletConnectService {
 
   //d8c3c8765c383efadd53e57fd3d7faa8
   initializeWallet(BuildContext context) async {
-    print("XontextInitializeWallet");
+
     appKit = ReownAppKit(
       core: ReownCore(projectId: "7f6c6821b45b28ce57e6811a6c2c85f4"),
       metadata: const PairingMetadata(

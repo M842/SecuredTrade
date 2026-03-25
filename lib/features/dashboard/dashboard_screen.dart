@@ -26,7 +26,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       bottomNavigationBar: AppBottomMenu(
         onTabTapped: (value) {
           setState(() {
-            context.read<AuthBloc>().isSubscribed=true;
+            context.read<AuthBloc>().isSubscribed = true;
             selectIndex = value;
           });
         },
@@ -34,13 +34,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (c, AuthState state) {
-          if (state is InvestSuccessState) {
+          if (state is NFtsBurnSuccessState) {
             SnackbarHelper.show(
               context,
               message: state.message,
               backgroundColor: AppColors.green,
             );
-          } else if (state is InvestFailedState) {
+          } else if (state is NFTsBurnFailedState) {
             SnackbarHelper.show(context, message: state.message);
           }
         },

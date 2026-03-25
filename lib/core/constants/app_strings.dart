@@ -127,6 +127,7 @@ class AppStrings {
   static String futureIcon = "assets/images/bottom_menu/future.png";
 
   static String closeIcon = "assets/images/closeIcon.png";
+  static String investment = "assets/images/investment.png";
 
   static String errorIcon = "assets/images/error2_icon.png";
   static String checkedIcon = "assets/images/checked_icon.png";

@@ -219,7 +219,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ? "Risk Engine Active"
                         : "Strategy Update Available",
                     subHeading: index == 0
-                        ? "AI model confidence for BTC increased to 87%. High probability trend continuation."
+                        ? "AI models confidence for BTC increased to 87%. High probability trend continuation."
                         : index == 1
                         ? "All risk controls operational. Portfolio exposure within safe limits."
                         : "ETH/USDT spot position closed at \$2,340. Profit:  +\$64.30 (+4.23%)",

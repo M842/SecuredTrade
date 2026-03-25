@@ -1,4 +1,5 @@
 import 'package:securedtrade/config/path_config.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeTradeOptionModel {
   final String title, icon;
@@ -107,7 +108,7 @@ class _HomeItemListState extends State<HomeItemList> {
     );
   }
 
-  void onHandlerEvent(int index) {
+  void onHandlerEvent(int index) async {
     switch (index) {
       case 0:
         context.push(AppRoutePaths.apiManage);
@@ -129,7 +130,12 @@ class _HomeItemListState extends State<HomeItemList> {
         context.push(AppRoutePaths.userGuide);
         break;
       case 6:
-        context.push(AppRoutePaths.telegram);
+        //context.push(AppRoutePaths.telegram);
+        final Uri url = Uri.parse("https://t.me/M842_bot?start=login_12345");
+
+        if (await canLaunchUrl(url)) {
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+        }
         break;
     }
   }

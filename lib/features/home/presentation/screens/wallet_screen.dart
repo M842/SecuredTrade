@@ -1,170 +1,188 @@
 import 'package:securedtrade/config/path_config.dart';
+import 'package:securedtrade/features/home/domain/entities/payout_model.dart';
 import 'package:securedtrade/shared/styles/gradient.dart';
 
-class WalletScreen extends StatelessWidget {
+class WalletScreen extends StatefulWidget {
   final bool leading;
   const WalletScreen({super.key, required this.leading});
+
+  @override
+  State<WalletScreen> createState() => _WalletScreenState();
+}
+
+class _WalletScreenState extends State<WalletScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<HomeBloc>().add(
+      LoadPayout(context.read<AuthBloc>().bigIntUserId),
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.appBarColor,
-      appBar: AppAppBar(title: "Wallet", leading: leading),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 8.0,
-              right: 8,
-              top: 5,
-              bottom: 5,
-            ),
-            child: Container(
-              width: double.infinity,
-              height: 197,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                gradient: AppGradients.primary,
+      appBar: AppAppBar(title: "Wallet", leading: widget.leading),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 8.0,
+                right: 8,
+                top: 5,
+                bottom: 5,
               ),
-              child: Stack(
+              child: Container(
+                width: double.infinity,
+                height: 197,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: AppGradients.primary,
+                ),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Image.asset(
+                        AppStrings.withdrawLogoIcon,
+                        height: 170,
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 8, width: 0),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 12.0,
+                            left: 12,
+                            bottom: 10,
+                          ),
+                          child: Text(
+                            "Total Estimated Assets(USD)",
+                            style: getDmSansTextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Text(
+                                    "2,509.750",
+                                    style: getOutfitTextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Text(
+                                    "=\$2,590.75",
+                                    style: getOutfitTextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.white,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 0, width: 20),
+                            Text(
+                              "+9.77%",
+                              style: getDmSansTextStyle(
+                                fontSize: 14,
+                                color: Colors.green,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5, width: 0),
+                        Row(
+                          children: [
+                            buildCurrencyBalance(heading: "USDT Balance"),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 8.0,
+                                top: 10,
+                                right: 8,
+                              ),
+                              child: ContainerBg(
+                                backgroundColor: Color(0xffF8F9FA80),
+                                height: 40,
+                                width: 1,
+                                child: SizedBox(),
+                              ),
+                            ),
+                            buildCurrencyBalance(heading: "USDC Balance"),
+                            SizedBox(
+                              height: 0,
+                              width: UIHelpers.screenSize(context).width / 4.5,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 10, width: 0),
+            withdrawBalanceUI(),
+            SizedBox(height: 10, width: 0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
                 children: [
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Image.asset(
-                      AppStrings.withdrawLogoIcon,
-                      height: 170,
+                  Flexible(
+                    child: AppButton(
+                      backgroundColor: AppColors.white,
+                      borderColor: AppColors.primary,
+                      bWidth: 1,
+                      fontSize: 16,
+                      padding: 5,
+                      height: 45,
+                      textColor: AppColors.black,
+                      text: "Withdraw",
+                      onPressed: () {},
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 8, width: 0),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 12.0,
-                          left: 12,
-                          bottom: 10,
-                        ),
-                        child: Text(
-                          "Total Estimated Assets(USD)",
-                          style: getDmSansTextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 12.0),
-                                child: Text(
-                                  "2,509.750",
-                                  style: getOutfitTextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.white,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 12.0),
-                                child: Text(
-                                  "=\$2,590.75",
-                                  style: getOutfitTextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.white,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 0, width: 20),
-                          Text(
-                            "+9.77%",
-                            style: getDmSansTextStyle(
-                              fontSize: 14,
-                              color: Colors.green,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5, width: 0),
-                      Row(
-                        children: [
-                          buildCurrencyBalance(heading: "USDT Balance"),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 8.0,
-                              top: 10,
-                              right: 8,
-                            ),
-                            child: ContainerBg(
-                              backgroundColor: Color(0xffF8F9FA80),
-                              height: 40,
-                              width: 1,
-                              child: SizedBox(),
-                            ),
-                          ),
-                          buildCurrencyBalance(heading: "USDC Balance"),
-                          SizedBox(
-                            height: 0,
-                            width: UIHelpers.screenSize(context).width / 4.5,
-                          ),
-                        ],
-                      ),
-                    ],
+                  SizedBox(height: 0, width: 10),
+                  Flexible(
+                    child: AppButton(
+                      height: 45,
+                      backgroundColor: Colors.green,
+                      padding: 5,
+                      text: "Deposit",
+                      fontSize: 16,
+                      onPressed: () {
+                        context.push(AppRoutePaths.deposit);
+                        //Get.to(DepositNftScreen());
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
-          SizedBox(height: 10, width: 0),
-          withdrawBalanceUI(),
-          SizedBox(height: 10, width: 0),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Flexible(
-                  child: AppButton(
-                    backgroundColor: AppColors.white,
-                    borderColor: AppColors.primary,
-                    bWidth: 1,
-                    fontSize: 16,
-                    padding: 5,
-                    height: 45,
-                    textColor: AppColors.black,
-                    text: "Withdraw",
-                    onPressed: () {},
-                  ),
-                ),
-                SizedBox(height: 0, width: 10),
-                Flexible(
-                  child: AppButton(
-                    height: 45,
-                    backgroundColor: Colors.green,
-                    padding: 5,
-                    text: "Deposit",
-                    fontSize: 16,
-                    onPressed: () {
-                      context.push(AppRoutePaths.deposit);
-                      //Get.to(DepositNftScreen());
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 15, width: 0),
-          buildTransactionHistory(),
-        ],
+            SizedBox(height: 15, width: 0),
+            buildTransactionHistory(),
+            AppSpacing.h12,
+          ],
+        ),
       ),
     );
   }
@@ -268,135 +286,278 @@ class WalletScreen extends StatelessWidget {
   }
 
   buildTransactionHistory() {
-    return Expanded(
-      child: Container(
-        color: AppColors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 0, width: 10),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0, left: 17),
-              child: Text(
-                "History Record",
-                style: getDmSansTextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.black3,
-                ),
-              ),
-            ),
-            SizedBox(height: 5, width: 0),
-            Column(
-              children: List.generate(2, (intex) {
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    height: 75,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: AppColors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 4,
-                          color: AppColors.grey.withOpacity(.35),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                        left: 15,
-                        right: 15,
-                        bottom: 10,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                intex == 0 ? "Activation gain" : "Withdrawal",
-                                style: getDmSansTextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.black2,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              SizedBox(height: 5, width: 0),
-                              Text(
-                                intex == 0
-                                    ? "2023-04-22 04:40:20"
-                                    : "2023-04-19 12:40:20",
-                                style: getOutfitTextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.black4,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: Container(
-                              width: 1,
-                              height: 37,
-                              color: Color(0xff000000),
-                            ),
-                          ),
-                          SizedBox(height: 0, width: 15),
-                          SizedBox(
-                            width: 130,
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: intex == 0 ? "50.29" : "-16.40",
-                                      style: getDmSansTextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: intex == 0
-                                            ? Colors.green
-                                            : Colors.red,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: " USDT",
-                                      style: getDmSansTextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        color: intex == 0
-                                            ? Colors.green
-                                            : Colors.red,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 0, width: 5),
-                        ],
-                      ),
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (c, state) {
+        if (state is PayoutSuccessLoad) {
+          return Container(
+            color: AppColors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 0, width: 10),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0, left: 17),
+                  child: Text(
+                    "History Record",
+                    style: getDmSansTextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.black3,
                     ),
                   ),
-                );
-              }),
+                ),
+                SizedBox(height: 5, width: 0),
+                Column(
+                  children: state.payoutList.map((toElement) {
+                    final superIncome = toElement.superIncome.toDouble() / 1e12;
+                    final adminSuperIncome =
+                        toElement.adminSuperIncomeTax.toDouble() / 1e12;
+
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        height: 405,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppColors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 4,
+                              color: AppColors.grey.withOpacity(.35),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 10.0,
+                            left: 15,
+                            right: 15,
+                            bottom: 10,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppSpacing.h8,
+                              historyListItemUI(
+                                title: "Differential Income",
+                                values: toElement.differentialIncome.toString(),
+                              ),
+                              AppSpacing.h4,
+                              historyListItemUI(
+                                title: "Parallel Income",
+                                values: toElement.parallelIncome.toString(),
+                              ),
+                              AppSpacing.h4,
+                              historyListItemUI(
+                                level: "Lv",
+                                title: "RoyaltyV3",
+                                values: toElement.royaltyV3.toString(),
+                              ),
+                              AppSpacing.h4,
+                              historyListItemUI(
+                                level: "Lv",
+                                title: "RoyaltyV5",
+                                values: toElement.royaltyV5.toString(),
+                              ),
+                              AppSpacing.h4,
+                              historyListItemUI(
+                                level: "Lv",
+                                title: "RoyaltyV7",
+                                values: toElement.parallelIncome.toString(),
+                              ),
+                              AppSpacing.h4,
+                              historyListItemUI(
+                                level: "Lv",
+                                title: "RoyaltyV5Count",
+                                values: toElement.royaltyV5Count.toString(),
+                              ),
+                              AppSpacing.h4,
+                              historyListItemUI(
+                                level: "Lv",
+                                title: "RoyaltyV7Count",
+                                values: toElement.royaltyV7Count.toString(),
+                              ),
+                              AppSpacing.h4,
+                              historyListItemUI(
+                                title: "SuperIncome",
+                                values: superIncome.toInt().toString(),
+                              ),
+                              AppSpacing.h4,
+                              historyListItemUI(
+                                title: "Admin Income Tax",
+
+                                values: adminSuperIncome.toInt().toString(),
+                              ),
+
+                              AppSpacing.h12,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 1.0),
+                                child: Text(
+                                  formatDate(toElement.createdAt),
+                                  style: getOutfitTextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+
+                              /*
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Super Income",
+                                    style: getDmSansTextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.black2,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5, width: 0),
+                                  Text(
+                                    formatDate(toElement.createdAt),
+                                    style: getOutfitTextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.black4,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Container(
+                                  width: 1,
+                                  height: 37,
+                                  color: Color(0xff000000),
+                                ),
+                              ),
+                              SizedBox(height: 0, width: 15),
+                              SizedBox(
+                                width: 130,
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: superIncome.toStringAsFixed(
+                                            2,
+                                          ),
+                                          style: getDmSansTextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.green,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: " USDT",
+                                          style: getDmSansTextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.green,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 0, width: 5),*/
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                // Flexible(
+                //     child: NoDataFound(
+                //   text: 'No Data Found',
+                //   height: 4.2,
+                // )),
+              ],
             ),
-            // Flexible(
-            //     child: NoDataFound(
-            //   text: 'No Data Found',
-            //   height: 4.2,
-            // )),
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
+    );
+  }
+
+  String formatDate(BigInt timestamp) {
+    final date = DateTime.fromMillisecondsSinceEpoch(timestamp.toInt() * 1000);
+
+    return "${date.year}-${date.month}-${date.day} "
+        "${date.hour}:${date.minute}:${date.second}";
+  }
+
+  historyListItemUI({
+    required String title,
+    required String values,
+    String level = "OZONE",
+  }) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              title,
+              style: getDmSansTextStyle(
+                fontWeight: FontWeight.w700,
+                color: AppColors.black2,
+                fontSize: 14,
+              ),
+            ),
+            Spacer(),
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: values,
+                    style: getDmSansTextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: int.parse(values) > 0
+                          ? title.contains("Tax")
+                                ? AppColors.red
+                                : Colors.green
+                          : AppColors.grey,
+                      fontSize: 16,
+                    ),
+                  ),
+                  TextSpan(
+                    text: level == "Lv" ? " Lv" : " OZONE",
+                    style: getDmSansTextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: int.parse(values) > 0
+                          ? title.contains("Tax")
+                                ? AppColors.red
+                                : Colors.green
+                          : AppColors.black3,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
-      ),
+
+        title.contains("Tax")
+            ? SizedBox()
+            : Padding(
+                padding: const EdgeInsets.only(top: 7.0, bottom: 7),
+                child: Container(
+                  height: 1,
+                  color: AppColors.grey.withOpacity(.7),
+                ),
+              ),
+      ],
     );
   }
 }

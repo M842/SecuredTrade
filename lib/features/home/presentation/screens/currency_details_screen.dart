@@ -43,7 +43,7 @@ class _SelectedCurrencyDetailsScreenState
   @override
   void initState() {
     super.initState();
-    print("object${widget.tradingMode.name}");
+
     wc.call(
       "wss://stream.binance.com:9443/ws/${widget.selectedCurrency.toString().toLowerCase()}@miniTicker",
       widget.selectedCurrency,
